@@ -1,0 +1,27 @@
+{
+  "hrVerseApp": {
+    "contractTermination": {
+      "home": {
+        "title": "Contract Terminations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Contract Termination",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Contract Termination",
+        "notFound": "No Contract Terminations found"
+      },
+      "created": "Một Contract Termination mới được tạo với định danh {{ param }}",
+      "updated": "Một Contract Termination cập nhật với định danh {{ param }}",
+      "deleted": "Một Contract Termination đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Contract Termination {{ id }}?"
+      },
+      "detail": {
+        "title": "Contract Termination"
+      },
+      "id": "ID",
+      "terminationDate": "Termination Date",
+      "reason": "Reason",
+      "compensation": "Compensation",
+      "contract": "Contract"
+    }
+  }
+}

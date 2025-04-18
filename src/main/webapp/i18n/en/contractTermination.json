@@ -1,0 +1,27 @@
+{
+  "hrVerseApp": {
+    "contractTermination": {
+      "home": {
+        "title": "Contract Terminations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Contract Termination",
+        "createOrEditLabel": "Create or edit a Contract Termination",
+        "notFound": "No Contract Terminations found"
+      },
+      "created": "A new Contract Termination is created with identifier {{ param }}",
+      "updated": "A Contract Termination is updated with identifier {{ param }}",
+      "deleted": "A Contract Termination is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Contract Termination {{ id }}?"
+      },
+      "detail": {
+        "title": "Contract Termination"
+      },
+      "id": "ID",
+      "terminationDate": "Termination Date",
+      "reason": "Reason",
+      "compensation": "Compensation",
+      "contract": "Contract"
+    }
+  }
+}

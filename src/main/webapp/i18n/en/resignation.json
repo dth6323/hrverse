@@ -1,0 +1,29 @@
+{
+  "hrVerseApp": {
+    "resignation": {
+      "home": {
+        "title": "Resignations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Resignation",
+        "createOrEditLabel": "Create or edit a Resignation",
+        "notFound": "No Resignations found"
+      },
+      "created": "A new Resignation is created with identifier {{ param }}",
+      "updated": "A Resignation is updated with identifier {{ param }}",
+      "deleted": "A Resignation is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Resignation {{ id }}?"
+      },
+      "detail": {
+        "title": "Resignation"
+      },
+      "id": "ID",
+      "submissionDate": "Submission Date",
+      "effectiveDate": "Effective Date",
+      "reason": "Reason",
+      "status": "Status",
+      "notes": "Notes",
+      "employee": "Employee"
+    }
+  }
+}

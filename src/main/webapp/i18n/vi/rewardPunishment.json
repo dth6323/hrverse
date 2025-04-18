@@ -1,0 +1,29 @@
+{
+  "hrVerseApp": {
+    "rewardPunishment": {
+      "home": {
+        "title": "Reward Punishments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Reward Punishment",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Reward Punishment",
+        "notFound": "No Reward Punishments found"
+      },
+      "created": "Một Reward Punishment mới được tạo với định danh {{ param }}",
+      "updated": "Một Reward Punishment cập nhật với định danh {{ param }}",
+      "deleted": "Một Reward Punishment đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Reward Punishment {{ id }}?"
+      },
+      "detail": {
+        "title": "Reward Punishment"
+      },
+      "id": "ID",
+      "type": "Type",
+      "amount": "Amount",
+      "reason": "Reason",
+      "applyDate": "Apply Date",
+      "notes": "Notes",
+      "employee": "Employee"
+    }
+  }
+}

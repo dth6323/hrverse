@@ -1,0 +1,26 @@
+{
+  "hrVerseApp": {
+    "contractType": {
+      "home": {
+        "title": "Contract Types",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Contract Type",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Contract Type",
+        "notFound": "No Contract Types found"
+      },
+      "created": "Một Contract Type mới được tạo với định danh {{ param }}",
+      "updated": "Một Contract Type cập nhật với định danh {{ param }}",
+      "deleted": "Một Contract Type đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Contract Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Contract Type"
+      },
+      "id": "ID",
+      "typeName": "Type Name",
+      "description": "Description",
+      "contract": "Contract"
+    }
+  }
+}

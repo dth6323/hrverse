@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20250418030942"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "salary",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "workDay",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Payroll",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "payroll",
+      "relationshipName": "employee",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "wage",
+      "otherEntityRelationshipName": "payroll",
+      "relationshipName": "wage",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "salaryDistribute",
+      "otherEntityRelationshipName": "payroll",
+      "relationshipName": "salaryDistribute",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

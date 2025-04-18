@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (rewardPunishment(); as rewardPunishmentRef) {
+      <div>
+        <h2 data-cy="rewardPunishmentDetailsHeading">
+          <span jhiTranslate="hrVerseApp.rewardPunishment.detail.title">Reward Punishment</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ rewardPunishmentRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.rewardPunishment.type">Type</span></dt>
+          <dd>
+            <span>{{ rewardPunishmentRef.type }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.rewardPunishment.amount">Amount</span></dt>
+          <dd>
+            <span>{{ rewardPunishmentRef.amount }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.rewardPunishment.reason">Reason</span></dt>
+          <dd>
+            <span>{{ rewardPunishmentRef.reason }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.rewardPunishment.applyDate">Apply Date</span></dt>
+          <dd>
+            <span>{{ rewardPunishmentRef.applyDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.rewardPunishment.notes">Notes</span></dt>
+          <dd>
+            <span>{{ rewardPunishmentRef.notes }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.rewardPunishment.employee">Employee</span></dt>
+          <dd>
+            @if (rewardPunishment()!.employee) {
+              <div>
+                <a [routerLink]="['/employee', rewardPunishment()!.employee?.id, 'view']">{{ rewardPunishmentRef.employee?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/reward-punishment', rewardPunishmentRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

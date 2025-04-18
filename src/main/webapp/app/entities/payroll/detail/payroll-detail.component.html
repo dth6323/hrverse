@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (payroll(); as payrollRef) {
+      <div>
+        <h2 data-cy="payrollDetailsHeading"><span jhiTranslate="hrVerseApp.payroll.detail.title">Payroll</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ payrollRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.payroll.salary">Salary</span></dt>
+          <dd>
+            <span>{{ payrollRef.salary }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.payroll.workDay">Work Day</span></dt>
+          <dd>
+            <span>{{ payrollRef.workDay }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.payroll.employee">Employee</span></dt>
+          <dd>
+            @if (payroll()!.employee) {
+              <div>
+                <a [routerLink]="['/employee', payroll()!.employee?.id, 'view']">{{ payrollRef.employee?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.payroll.wage">Wage</span></dt>
+          <dd>
+            @if (payroll()!.wage) {
+              <div>
+                <a [routerLink]="['/wage', payroll()!.wage?.id, 'view']">{{ payrollRef.wage?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.payroll.salaryDistribute">Salary Distribute</span></dt>
+          <dd>
+            @if (payroll()!.salaryDistribute) {
+              <div>
+                <a [routerLink]="['/salary-distribute', payroll()!.salaryDistribute?.id, 'view']">{{ payrollRef.salaryDistribute?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/payroll', payrollRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

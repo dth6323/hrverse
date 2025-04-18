@@ -1,0 +1,30 @@
+@if (contractTermination) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(contractTermination.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="contractTerminationDeleteDialogHeading" jhiTranslate="entity.delete.title">
+        Confirm delete operation
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error></jhi-alert-error>
+      <p
+        id="jhi-delete-contractTermination-heading"
+        jhiTranslate="hrVerseApp.contractTermination.delete.question"
+        [translateValues]="{ id: contractTermination.id }"
+      >
+        Are you sure you want to delete Contract Termination {{ contractTermination.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+      </button>
+
+      <button id="jhi-confirm-delete-contractTermination" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Delete</span>
+      </button>
+    </div>
+  </form>
+}

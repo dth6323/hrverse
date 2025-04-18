@@ -1,0 +1,29 @@
+{
+  "hrVerseApp": {
+    "rewardPunishment": {
+      "home": {
+        "title": "Reward Punishments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Reward Punishment",
+        "createOrEditLabel": "Create or edit a Reward Punishment",
+        "notFound": "No Reward Punishments found"
+      },
+      "created": "A new Reward Punishment is created with identifier {{ param }}",
+      "updated": "A Reward Punishment is updated with identifier {{ param }}",
+      "deleted": "A Reward Punishment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Reward Punishment {{ id }}?"
+      },
+      "detail": {
+        "title": "Reward Punishment"
+      },
+      "id": "ID",
+      "type": "Type",
+      "amount": "Amount",
+      "reason": "Reason",
+      "applyDate": "Apply Date",
+      "notes": "Notes",
+      "employee": "Employee"
+    }
+  }
+}

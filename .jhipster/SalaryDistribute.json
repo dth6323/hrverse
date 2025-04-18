@@ -1,0 +1,41 @@
+{
+  "annotations": {
+    "changelogDate": "20250418030945"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "workDay",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "typeOfSalary",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "30"
+    }
+  ],
+  "name": "SalaryDistribute",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "payroll",
+      "otherEntityRelationshipName": "salaryDistribute",
+      "relationshipName": "payroll",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

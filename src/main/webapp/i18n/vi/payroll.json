@@ -1,0 +1,28 @@
+{
+  "hrVerseApp": {
+    "payroll": {
+      "home": {
+        "title": "Payrolls",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Payroll",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Payroll",
+        "notFound": "No Payrolls found"
+      },
+      "created": "Một Payroll mới được tạo với định danh {{ param }}",
+      "updated": "Một Payroll cập nhật với định danh {{ param }}",
+      "deleted": "Một Payroll đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Payroll {{ id }}?"
+      },
+      "detail": {
+        "title": "Payroll"
+      },
+      "id": "ID",
+      "salary": "Salary",
+      "workDay": "Work Day",
+      "employee": "Employee",
+      "wage": "Wage",
+      "salaryDistribute": "Salary Distribute"
+    }
+  }
+}

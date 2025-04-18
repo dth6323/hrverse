@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (resignation(); as resignationRef) {
+      <div>
+        <h2 data-cy="resignationDetailsHeading"><span jhiTranslate="hrVerseApp.resignation.detail.title">Resignation</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ resignationRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.resignation.submissionDate">Submission Date</span></dt>
+          <dd>
+            <span>{{ resignationRef.submissionDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.resignation.effectiveDate">Effective Date</span></dt>
+          <dd>
+            <span>{{ resignationRef.effectiveDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.resignation.reason">Reason</span></dt>
+          <dd>
+            <span>{{ resignationRef.reason }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.resignation.status">Status</span></dt>
+          <dd>
+            <span>{{ resignationRef.status }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.resignation.notes">Notes</span></dt>
+          <dd>
+            <span>{{ resignationRef.notes }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.resignation.employee">Employee</span></dt>
+          <dd>
+            @if (resignation()!.employee) {
+              <div>
+                <a [routerLink]="['/employee', resignation()!.employee?.id, 'view']">{{ resignationRef.employee?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/resignation', resignationRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

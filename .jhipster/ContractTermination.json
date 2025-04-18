@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20250418030938"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "terminationDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "reason",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "compensation",
+      "fieldType": "Float"
+    }
+  ],
+  "name": "ContractTermination",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "contract",
+      "otherEntityRelationshipName": "contractTermination",
+      "relationshipName": "contract",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

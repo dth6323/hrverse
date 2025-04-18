@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20250418030939"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "typeName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    }
+  ],
+  "name": "ContractType",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "contract",
+      "otherEntityRelationshipName": "contractType",
+      "relationshipName": "contract",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

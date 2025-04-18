@@ -1,0 +1,29 @@
+{
+  "hrVerseApp": {
+    "resignation": {
+      "home": {
+        "title": "Resignations",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Resignation",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Resignation",
+        "notFound": "No Resignations found"
+      },
+      "created": "Một Resignation mới được tạo với định danh {{ param }}",
+      "updated": "Một Resignation cập nhật với định danh {{ param }}",
+      "deleted": "Một Resignation đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Resignation {{ id }}?"
+      },
+      "detail": {
+        "title": "Resignation"
+      },
+      "id": "ID",
+      "submissionDate": "Submission Date",
+      "effectiveDate": "Effective Date",
+      "reason": "Reason",
+      "status": "Status",
+      "notes": "Notes",
+      "employee": "Employee"
+    }
+  }
+}

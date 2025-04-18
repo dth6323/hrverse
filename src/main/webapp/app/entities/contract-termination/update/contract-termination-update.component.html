@@ -1,0 +1,116 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-contract-termination-heading"
+        data-cy="ContractTerminationCreateUpdateHeading"
+        jhiTranslate="hrVerseApp.contractTermination.home.createOrEditLabel"
+      >
+        Create or edit a Contract Termination
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="hrVerseApp.contractTermination.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let terminationDateRef = editForm.get('terminationDate')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_terminationDate" jhiTranslate="hrVerseApp.contractTermination.terminationDate"
+            >Termination Date</label
+          >
+          <div class="input-group">
+            <input
+              id="field_terminationDate"
+              data-cy="terminationDate"
+              type="text"
+              class="form-control"
+              name="terminationDate"
+              ngbDatepicker
+              #terminationDateDp="ngbDatepicker"
+              formControlName="terminationDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="terminationDateDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+          @if (terminationDateRef.invalid && (terminationDateRef.dirty || terminationDateRef.touched)) {
+            <div>
+              @if (editForm.get('terminationDate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let reasonRef = editForm.get('reason')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_reason" jhiTranslate="hrVerseApp.contractTermination.reason">Reason</label>
+          <input type="text" class="form-control" name="reason" id="field_reason" data-cy="reason" formControlName="reason" />
+          @if (reasonRef.invalid && (reasonRef.dirty || reasonRef.touched)) {
+            <div>
+              @if (editForm.get('reason')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              @if (editForm.get('reason')?.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '255' }"
+                  >This field cannot be longer than 255 characters.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_compensation" jhiTranslate="hrVerseApp.contractTermination.compensation">Compensation</label>
+          <input
+            type="number"
+            class="form-control"
+            name="compensation"
+            id="field_compensation"
+            data-cy="compensation"
+            formControlName="compensation"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_contract" jhiTranslate="hrVerseApp.contractTermination.contract">Contract</label>
+          <select
+            class="form-control"
+            id="field_contract"
+            data-cy="contract"
+            name="contract"
+            formControlName="contract"
+            [compareWith]="compareContract"
+          >
+            <option [ngValue]="null"></option>
+            @for (contractOption of contractsSharedCollection; track $index) {
+              <option [ngValue]="contractOption">{{ contractOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

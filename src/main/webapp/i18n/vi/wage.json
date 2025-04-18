@@ -1,0 +1,27 @@
+{
+  "hrVerseApp": {
+    "wage": {
+      "home": {
+        "title": "Wages",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Wage",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Wage",
+        "notFound": "No Wages found"
+      },
+      "created": "Một Wage mới được tạo với định danh {{ param }}",
+      "updated": "Một Wage cập nhật với định danh {{ param }}",
+      "deleted": "Một Wage đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Wage {{ id }}?"
+      },
+      "detail": {
+        "title": "Wage"
+      },
+      "id": "ID",
+      "coefficients": "Coefficients",
+      "baseSalary": "Base Salary",
+      "allowance": "Allowance",
+      "payroll": "Payroll"
+    }
+  }
+}

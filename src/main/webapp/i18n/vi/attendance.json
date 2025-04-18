@@ -1,0 +1,28 @@
+{
+  "hrVerseApp": {
+    "attendance": {
+      "home": {
+        "title": "Attendances",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Attendance",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Attendance",
+        "notFound": "No Attendances found"
+      },
+      "created": "Một Attendance mới được tạo với định danh {{ param }}",
+      "updated": "Một Attendance cập nhật với định danh {{ param }}",
+      "deleted": "Một Attendance đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Attendance {{ id }}?"
+      },
+      "detail": {
+        "title": "Attendance"
+      },
+      "id": "ID",
+      "dateOfwork": "Date Ofwork",
+      "checkInTime": "Check In Time",
+      "checkOutTime": "Check Out Time",
+      "workHour": "Work Hour",
+      "employee": "Employee"
+    }
+  }
+}

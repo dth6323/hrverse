@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (employee(); as employeeRef) {
+      <div>
+        <h2 data-cy="employeeDetailsHeading"><span jhiTranslate="hrVerseApp.employee.detail.title">Employee</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ employeeRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.name">Name</span></dt>
+          <dd>
+            <span>{{ employeeRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.phone">Phone</span></dt>
+          <dd>
+            <span>{{ employeeRef.phone }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.email">Email</span></dt>
+          <dd>
+            <span>{{ employeeRef.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.address">Address</span></dt>
+          <dd>
+            <span>{{ employeeRef.address }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.gender">Gender</span></dt>
+          <dd>
+            <span>{{ employeeRef.gender }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.dateOfBirth">Date Of Birth</span></dt>
+          <dd>
+            <span>{{ employeeRef.dateOfBirth | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.department">Department</span></dt>
+          <dd>
+            @if (employee()!.department) {
+              <div>
+                <a [routerLink]="['/department', employee()!.department?.id, 'view']">{{ employeeRef.department?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.contract">Contract</span></dt>
+          <dd>
+            @if (employee()!.contract) {
+              <div>
+                <a [routerLink]="['/contract', employee()!.contract?.id, 'view']">{{ employeeRef.contract?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/employee', employeeRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

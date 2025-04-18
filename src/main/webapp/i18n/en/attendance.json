@@ -1,0 +1,28 @@
+{
+  "hrVerseApp": {
+    "attendance": {
+      "home": {
+        "title": "Attendances",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Attendance",
+        "createOrEditLabel": "Create or edit a Attendance",
+        "notFound": "No Attendances found"
+      },
+      "created": "A new Attendance is created with identifier {{ param }}",
+      "updated": "A Attendance is updated with identifier {{ param }}",
+      "deleted": "A Attendance is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Attendance {{ id }}?"
+      },
+      "detail": {
+        "title": "Attendance"
+      },
+      "id": "ID",
+      "dateOfwork": "Date Ofwork",
+      "checkInTime": "Check In Time",
+      "checkOutTime": "Check Out Time",
+      "workHour": "Work Hour",
+      "employee": "Employee"
+    }
+  }
+}

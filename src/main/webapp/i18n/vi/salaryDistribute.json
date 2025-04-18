@@ -1,0 +1,28 @@
+{
+  "hrVerseApp": {
+    "salaryDistribute": {
+      "home": {
+        "title": "Salary Distributes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Salary Distribute",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Salary Distribute",
+        "notFound": "No Salary Distributes found"
+      },
+      "created": "Một Salary Distribute mới được tạo với định danh {{ param }}",
+      "updated": "Một Salary Distribute cập nhật với định danh {{ param }}",
+      "deleted": "Một Salary Distribute đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Salary Distribute {{ id }}?"
+      },
+      "detail": {
+        "title": "Salary Distribute"
+      },
+      "id": "ID",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "workDay": "Work Day",
+      "typeOfSalary": "Type Of Salary",
+      "payroll": "Payroll"
+    }
+  }
+}

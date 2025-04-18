@@ -1,0 +1,27 @@
+{
+  "hrVerseApp": {
+    "wage": {
+      "home": {
+        "title": "Wages",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Wage",
+        "createOrEditLabel": "Create or edit a Wage",
+        "notFound": "No Wages found"
+      },
+      "created": "A new Wage is created with identifier {{ param }}",
+      "updated": "A Wage is updated with identifier {{ param }}",
+      "deleted": "A Wage is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Wage {{ id }}?"
+      },
+      "detail": {
+        "title": "Wage"
+      },
+      "id": "ID",
+      "coefficients": "Coefficients",
+      "baseSalary": "Base Salary",
+      "allowance": "Allowance",
+      "payroll": "Payroll"
+    }
+  }
+}

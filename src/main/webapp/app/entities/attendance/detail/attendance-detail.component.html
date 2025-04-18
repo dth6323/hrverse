@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (attendance(); as attendanceRef) {
+      <div>
+        <h2 data-cy="attendanceDetailsHeading"><span jhiTranslate="hrVerseApp.attendance.detail.title">Attendance</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ attendanceRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.attendance.dateOfwork">Date Ofwork</span></dt>
+          <dd>
+            <span>{{ attendanceRef.dateOfwork | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.attendance.checkInTime">Check In Time</span></dt>
+          <dd>
+            <span>{{ attendanceRef.checkInTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.attendance.checkOutTime">Check Out Time</span></dt>
+          <dd>
+            <span>{{ attendanceRef.checkOutTime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.attendance.workHour">Work Hour</span></dt>
+          <dd>
+            <span>{{ attendanceRef.workHour }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.attendance.employee">Employee</span></dt>
+          <dd>
+            @if (attendance()!.employee) {
+              <div>
+                <a [routerLink]="['/employee', attendance()!.employee?.id, 'view']">{{ attendanceRef.employee?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/attendance', attendanceRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

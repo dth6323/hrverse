@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20250418030946"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "coefficients",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "baseSalary",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "allowance",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Wage",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "payroll",
+      "otherEntityRelationshipName": "wage",
+      "relationshipName": "payroll",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

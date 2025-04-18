@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (wage(); as wageRef) {
+      <div>
+        <h2 data-cy="wageDetailsHeading"><span jhiTranslate="hrVerseApp.wage.detail.title">Wage</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ wageRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.wage.coefficients">Coefficients</span></dt>
+          <dd>
+            <span>{{ wageRef.coefficients }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.wage.baseSalary">Base Salary</span></dt>
+          <dd>
+            <span>{{ wageRef.baseSalary }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.wage.allowance">Allowance</span></dt>
+          <dd>
+            <span>{{ wageRef.allowance }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/wage', wageRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

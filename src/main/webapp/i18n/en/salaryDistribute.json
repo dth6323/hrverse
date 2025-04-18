@@ -1,0 +1,28 @@
+{
+  "hrVerseApp": {
+    "salaryDistribute": {
+      "home": {
+        "title": "Salary Distributes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Salary Distribute",
+        "createOrEditLabel": "Create or edit a Salary Distribute",
+        "notFound": "No Salary Distributes found"
+      },
+      "created": "A new Salary Distribute is created with identifier {{ param }}",
+      "updated": "A Salary Distribute is updated with identifier {{ param }}",
+      "deleted": "A Salary Distribute is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Salary Distribute {{ id }}?"
+      },
+      "detail": {
+        "title": "Salary Distribute"
+      },
+      "id": "ID",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "workDay": "Work Day",
+      "typeOfSalary": "Type Of Salary",
+      "payroll": "Payroll"
+    }
+  }
+}

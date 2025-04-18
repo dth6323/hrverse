@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (contract(); as contractRef) {
+      <div>
+        <h2 data-cy="contractDetailsHeading"><span jhiTranslate="hrVerseApp.contract.detail.title">Contract</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ contractRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.contract.startDate">Start Date</span></dt>
+          <dd>
+            <span>{{ contractRef.startDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.contract.endDate">End Date</span></dt>
+          <dd>
+            <span>{{ contractRef.endDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.contract.status">Status</span></dt>
+          <dd>
+            <span>{{ contractRef.status }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.contract.contractCode">Contract Code</span></dt>
+          <dd>
+            <span>{{ contractRef.contractCode }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrVerseApp.contract.contractType">Contract Type</span></dt>
+          <dd>
+            @if (contract()!.contractType) {
+              <div>
+                <a [routerLink]="['/contract-type', contract()!.contractType?.id, 'view']">{{ contractRef.contractType?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/contract', contractRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

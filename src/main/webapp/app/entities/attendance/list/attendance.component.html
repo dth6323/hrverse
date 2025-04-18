@@ -1,0 +1,142 @@
+<div>
+  <h2 id="page-heading" data-cy="AttendanceHeading">
+    <span jhiTranslate="hrVerseApp.attendance.home.title">Attendances</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="hrVerseApp.attendance.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-attendance"
+        [routerLink]="['/attendance/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="hrVerseApp.attendance.home.createLabel">Create a new Attendance</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (attendances?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="hrVerseApp.attendance.home.notFound">No Attendances found</span>
+    </div>
+  }
+
+  @if (attendances && attendances.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dateOfwork">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.attendance.dateOfwork">Date Ofwork</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="checkInTime">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.attendance.checkInTime">Check In Time</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="checkOutTime">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.attendance.checkOutTime">Check Out Time</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="workHour">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.attendance.workHour">Work Hour</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="employee.id">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.attendance.employee">Employee</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (attendance of attendances; track trackId(attendance)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/attendance', attendance.id, 'view']">{{ attendance.id }}</a>
+              </td>
+              <td>{{ attendance.dateOfwork | formatMediumDate }}</td>
+              <td>{{ attendance.checkInTime | formatMediumDatetime }}</td>
+              <td>{{ attendance.checkOutTime | formatMediumDatetime }}</td>
+              <td>{{ attendance.workHour }}</td>
+              <td>
+                @if (attendance.employee) {
+                  <div>
+                    <a [routerLink]="['/employee', attendance.employee.id, 'view']">{{ attendance.employee.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/attendance', attendance.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/attendance', attendance.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(attendance)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (attendances && attendances.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

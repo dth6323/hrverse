@@ -1,0 +1,155 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-attendance-heading" data-cy="AttendanceCreateUpdateHeading" jhiTranslate="hrVerseApp.attendance.home.createOrEditLabel">
+        Create or edit a Attendance
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="hrVerseApp.attendance.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let dateOfworkRef = editForm.get('dateOfwork')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_dateOfwork" jhiTranslate="hrVerseApp.attendance.dateOfwork">Date Ofwork</label>
+          <div class="input-group">
+            <input
+              id="field_dateOfwork"
+              data-cy="dateOfwork"
+              type="text"
+              class="form-control"
+              name="dateOfwork"
+              ngbDatepicker
+              #dateOfworkDp="ngbDatepicker"
+              formControlName="dateOfwork"
+            />
+            <button type="button" class="btn btn-secondary" (click)="dateOfworkDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          @if (dateOfworkRef.invalid && (dateOfworkRef.dirty || dateOfworkRef.touched)) {
+            <div>
+              @if (editForm.get('dateOfwork')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let checkInTimeRef = editForm.get('checkInTime')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_checkInTime" jhiTranslate="hrVerseApp.attendance.checkInTime">Check In Time</label>
+          <div class="d-flex">
+            <input
+              id="field_checkInTime"
+              data-cy="checkInTime"
+              type="datetime-local"
+              class="form-control"
+              name="checkInTime"
+              formControlName="checkInTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (checkInTimeRef.invalid && (checkInTimeRef.dirty || checkInTimeRef.touched)) {
+            <div>
+              @if (editForm.get('checkInTime')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('checkInTime')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >This field should be a date and time.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let checkOutTimeRef = editForm.get('checkOutTime')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_checkOutTime" jhiTranslate="hrVerseApp.attendance.checkOutTime">Check Out Time</label>
+          <div class="d-flex">
+            <input
+              id="field_checkOutTime"
+              data-cy="checkOutTime"
+              type="datetime-local"
+              class="form-control"
+              name="checkOutTime"
+              formControlName="checkOutTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (checkOutTimeRef.invalid && (checkOutTimeRef.dirty || checkOutTimeRef.touched)) {
+            <div>
+              @if (editForm.get('checkOutTime')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('checkOutTime')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >This field should be a date and time.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let workHourRef = editForm.get('workHour')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_workHour" jhiTranslate="hrVerseApp.attendance.workHour">Work Hour</label>
+          <input type="number" class="form-control" name="workHour" id="field_workHour" data-cy="workHour" formControlName="workHour" />
+          @if (workHourRef.invalid && (workHourRef.dirty || workHourRef.touched)) {
+            <div>
+              @if (editForm.get('workHour')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('workHour')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_employee" jhiTranslate="hrVerseApp.attendance.employee">Employee</label>
+          <select
+            class="form-control"
+            id="field_employee"
+            data-cy="employee"
+            name="employee"
+            formControlName="employee"
+            [compareWith]="compareEmployee"
+          >
+            <option [ngValue]="null"></option>
+            @for (employeeOption of employeesSharedCollection; track $index) {
+              <option [ngValue]="employeeOption">{{ employeeOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

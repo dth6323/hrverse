@@ -1,0 +1,30 @@
+{
+  "hrVerseApp": {
+    "contract": {
+      "home": {
+        "title": "Contracts",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Contract",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Contract",
+        "notFound": "No Contracts found"
+      },
+      "created": "Một Contract mới được tạo với định danh {{ param }}",
+      "updated": "Một Contract cập nhật với định danh {{ param }}",
+      "deleted": "Một Contract đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Contract {{ id }}?"
+      },
+      "detail": {
+        "title": "Contract"
+      },
+      "id": "ID",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "status": "Status",
+      "contractCode": "Contract Code",
+      "contractType": "Contract Type",
+      "employee": "Employee",
+      "contractTermination": "Contract Termination"
+    }
+  }
+}

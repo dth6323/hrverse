@@ -1,0 +1,107 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-wage-heading" data-cy="WageCreateUpdateHeading" jhiTranslate="hrVerseApp.wage.home.createOrEditLabel">
+        Create or edit a Wage
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="hrVerseApp.wage.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let coefficientsRef = editForm.get('coefficients')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_coefficients" jhiTranslate="hrVerseApp.wage.coefficients">Coefficients</label>
+          <input
+            type="number"
+            class="form-control"
+            name="coefficients"
+            id="field_coefficients"
+            data-cy="coefficients"
+            formControlName="coefficients"
+          />
+          @if (coefficientsRef.invalid && (coefficientsRef.dirty || coefficientsRef.touched)) {
+            <div>
+              @if (editForm.get('coefficients')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('coefficients')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let baseSalaryRef = editForm.get('baseSalary')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_baseSalary" jhiTranslate="hrVerseApp.wage.baseSalary">Base Salary</label>
+          <input
+            type="number"
+            class="form-control"
+            name="baseSalary"
+            id="field_baseSalary"
+            data-cy="baseSalary"
+            formControlName="baseSalary"
+          />
+          @if (baseSalaryRef.invalid && (baseSalaryRef.dirty || baseSalaryRef.touched)) {
+            <div>
+              @if (editForm.get('baseSalary')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('baseSalary')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let allowanceRef = editForm.get('allowance')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_allowance" jhiTranslate="hrVerseApp.wage.allowance">Allowance</label>
+          <input type="number" class="form-control" name="allowance" id="field_allowance" data-cy="allowance" formControlName="allowance" />
+          @if (allowanceRef.invalid && (allowanceRef.dirty || allowanceRef.touched)) {
+            <div>
+              @if (editForm.get('allowance')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('allowance')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

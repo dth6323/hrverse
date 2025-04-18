@@ -1,0 +1,152 @@
+<div>
+  <h2 id="page-heading" data-cy="PayrollHeading">
+    <span jhiTranslate="hrVerseApp.payroll.home.title">Payrolls</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="hrVerseApp.payroll.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-payroll"
+        [routerLink]="['/payroll/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="hrVerseApp.payroll.home.createLabel">Create a new Payroll</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (payrolls?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="hrVerseApp.payroll.home.notFound">No Payrolls found</span>
+    </div>
+  }
+
+  @if (payrolls && payrolls.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="salary">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.payroll.salary">Salary</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="workDay">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.payroll.workDay">Work Day</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="employee.id">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.payroll.employee">Employee</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="wage.id">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.payroll.wage">Wage</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="salaryDistribute.id">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.payroll.salaryDistribute">Salary Distribute</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (payroll of payrolls; track trackId(payroll)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/payroll', payroll.id, 'view']">{{ payroll.id }}</a>
+              </td>
+              <td>{{ payroll.salary }}</td>
+              <td>{{ payroll.workDay }}</td>
+              <td>
+                @if (payroll.employee) {
+                  <div>
+                    <a [routerLink]="['/employee', payroll.employee.id, 'view']">{{ payroll.employee.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (payroll.wage) {
+                  <div>
+                    <a [routerLink]="['/wage', payroll.wage.id, 'view']">{{ payroll.wage.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (payroll.salaryDistribute) {
+                  <div>
+                    <a [routerLink]="['/salary-distribute', payroll.salaryDistribute.id, 'view']">{{ payroll.salaryDistribute.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/payroll', payroll.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/payroll', payroll.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(payroll)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (payrolls && payrolls.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>
