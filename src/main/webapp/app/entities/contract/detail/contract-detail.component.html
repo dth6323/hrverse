@@ -31,6 +31,14 @@
           <dd>
             <span>{{ contractRef.contractCode }}</span>
           </dd>
+          <dt><span jhiTranslate="hrVerseApp.contract.wage">Wage</span></dt>
+          <dd>
+            @if (contract()!.wage) {
+              <div>
+                <a [routerLink]="['/wage', contract()!.wage?.id, 'view']">{{ contractRef.wage?.id }}</a>
+              </div>
+            }
+          </dd>
           <dt><span jhiTranslate="hrVerseApp.contract.contractType">Contract Type</span></dt>
           <dd>
             @if (contract()!.contractType) {

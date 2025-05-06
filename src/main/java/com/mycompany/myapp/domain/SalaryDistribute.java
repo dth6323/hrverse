@@ -42,7 +42,7 @@ public class SalaryDistribute implements Serializable {
     private String typeOfSalary;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "salaryDistribute")
-    @JsonIgnoreProperties(value = { "employee", "wage", "salaryDistribute" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "employee", "salaryDistribute" }, allowSetters = true)
     private Set<Payroll> payrolls = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

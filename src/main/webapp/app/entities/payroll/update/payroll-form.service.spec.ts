@@ -23,7 +23,6 @@ describe('Payroll Form Service', () => {
             salary: expect.any(Object),
             workDay: expect.any(Object),
             employee: expect.any(Object),
-            wage: expect.any(Object),
             salaryDistribute: expect.any(Object),
           }),
         );
@@ -38,7 +37,6 @@ describe('Payroll Form Service', () => {
             salary: expect.any(Object),
             workDay: expect.any(Object),
             employee: expect.any(Object),
-            wage: expect.any(Object),
             salaryDistribute: expect.any(Object),
           }),
         );

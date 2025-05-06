@@ -74,7 +74,7 @@ relationship ManyToOne {
   Employee to Contract,
   Attendance to Employee,
   Payroll to Employee,
-  Payroll to Wage,
+  Contract to Wage,
   Payroll to SalaryDistribute,
   Contract to ContractType,
   ContractTermination to Contract,

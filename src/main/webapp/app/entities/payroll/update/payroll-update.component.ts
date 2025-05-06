@@ -9,8 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { EmployeeService } from 'app/entities/employee/service/employee.service';
-import { IWage } from 'app/entities/wage/wage.model';
-import { WageService } from 'app/entities/wage/service/wage.service';
 import { ISalaryDistribute } from 'app/entities/salary-distribute/salary-distribute.model';
 import { SalaryDistributeService } from 'app/entities/salary-distribute/service/salary-distribute.service';
 import { PayrollService } from '../service/payroll.service';
@@ -28,13 +26,11 @@ export class PayrollUpdateComponent implements OnInit {
   payroll: IPayroll | null = null;
 
   employeesSharedCollection: IEmployee[] = [];
-  wagesSharedCollection: IWage[] = [];
   salaryDistributesSharedCollection: ISalaryDistribute[] = [];
 
   protected payrollService = inject(PayrollService);
   protected payrollFormService = inject(PayrollFormService);
   protected employeeService = inject(EmployeeService);
-  protected wageService = inject(WageService);
   protected salaryDistributeService = inject(SalaryDistributeService);
   protected activatedRoute = inject(ActivatedRoute);
 
@@ -42,8 +38,6 @@ export class PayrollUpdateComponent implements OnInit {
   editForm: PayrollFormGroup = this.payrollFormService.createPayrollFormGroup();
 
   compareEmployee = (o1: IEmployee | null, o2: IEmployee | null): boolean => this.employeeService.compareEmployee(o1, o2);
-
-  compareWage = (o1: IWage | null, o2: IWage | null): boolean => this.wageService.compareWage(o1, o2);
 
   compareSalaryDistribute = (o1: ISalaryDistribute | null, o2: ISalaryDistribute | null): boolean =>
     this.salaryDistributeService.compareSalaryDistribute(o1, o2);
@@ -100,7 +94,6 @@ export class PayrollUpdateComponent implements OnInit {
       this.employeesSharedCollection,
       payroll.employee,
     );
-    this.wagesSharedCollection = this.wageService.addWageToCollectionIfMissing<IWage>(this.wagesSharedCollection, payroll.wage);
     this.salaryDistributesSharedCollection = this.salaryDistributeService.addSalaryDistributeToCollectionIfMissing<ISalaryDistribute>(
       this.salaryDistributesSharedCollection,
       payroll.salaryDistribute,
@@ -117,12 +110,6 @@ export class PayrollUpdateComponent implements OnInit {
         ),
       )
       .subscribe((employees: IEmployee[]) => (this.employeesSharedCollection = employees));
-
-    this.wageService
-      .query()
-      .pipe(map((res: HttpResponse<IWage[]>) => res.body ?? []))
-      .pipe(map((wages: IWage[]) => this.wageService.addWageToCollectionIfMissing<IWage>(wages, this.payroll?.wage)))
-      .subscribe((wages: IWage[]) => (this.wagesSharedCollection = wages));
 
     this.salaryDistributeService
       .query()

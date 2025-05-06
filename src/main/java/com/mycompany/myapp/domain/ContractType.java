@@ -33,7 +33,7 @@ public class ContractType implements Serializable {
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contractType")
-    @JsonIgnoreProperties(value = { "contractType", "employees", "contractTerminations" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "wage", "contractType", "employees", "contractTerminations" }, allowSetters = true)
     private Set<Contract> contracts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

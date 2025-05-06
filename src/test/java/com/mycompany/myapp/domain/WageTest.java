@@ -1,6 +1,6 @@
 package com.mycompany.myapp.domain;
 
-import static com.mycompany.myapp.domain.PayrollTestSamples.*;
+import static com.mycompany.myapp.domain.ContractTestSamples.*;
 import static com.mycompany.myapp.domain.WageTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,24 +26,24 @@ class WageTest {
     }
 
     @Test
-    void payrollTest() {
+    void contractTest() {
         Wage wage = getWageRandomSampleGenerator();
-        Payroll payrollBack = getPayrollRandomSampleGenerator();
+        Contract contractBack = getContractRandomSampleGenerator();
 
-        wage.addPayroll(payrollBack);
-        assertThat(wage.getPayrolls()).containsOnly(payrollBack);
-        assertThat(payrollBack.getWage()).isEqualTo(wage);
+        wage.addContract(contractBack);
+        assertThat(wage.getContracts()).containsOnly(contractBack);
+        assertThat(contractBack.getWage()).isEqualTo(wage);
 
-        wage.removePayroll(payrollBack);
-        assertThat(wage.getPayrolls()).doesNotContain(payrollBack);
-        assertThat(payrollBack.getWage()).isNull();
+        wage.removeContract(contractBack);
+        assertThat(wage.getContracts()).doesNotContain(contractBack);
+        assertThat(contractBack.getWage()).isNull();
 
-        wage.payrolls(new HashSet<>(Set.of(payrollBack)));
-        assertThat(wage.getPayrolls()).containsOnly(payrollBack);
-        assertThat(payrollBack.getWage()).isEqualTo(wage);
+        wage.contracts(new HashSet<>(Set.of(contractBack)));
+        assertThat(wage.getContracts()).containsOnly(contractBack);
+        assertThat(contractBack.getWage()).isEqualTo(wage);
 
-        wage.setPayrolls(new HashSet<>());
-        assertThat(wage.getPayrolls()).doesNotContain(payrollBack);
-        assertThat(payrollBack.getWage()).isNull();
+        wage.setContracts(new HashSet<>());
+        assertThat(wage.getContracts()).doesNotContain(contractBack);
+        assertThat(contractBack.getWage()).isNull();
     }
 }

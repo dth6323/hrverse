@@ -1,17 +1,15 @@
 package com.mycompany.myapp.web.rest;
 
-import com.mycompany.myapp.domain.Attendance;
-import com.mycompany.myapp.domain.Payroll;
 import com.mycompany.myapp.domain.SalaryDistribute;
-import com.mycompany.myapp.domain.Wage;
 import com.mycompany.myapp.repository.SalaryDistributeRepository;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +45,13 @@ public class SalaryDistributeResource {
         this.salaryDistributeRepository = salaryDistributeRepository;
     }
 
+    /**
+     * {@code POST  /salary-distributes} : Create a new salaryDistribute.
+     *
+     * @param salaryDistribute the salaryDistribute to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new salaryDistribute, or with status {@code 400 (Bad Request)} if the salaryDistribute has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
     @PostMapping("")
     public ResponseEntity<SalaryDistribute> createSalaryDistribute(@Valid @RequestBody SalaryDistribute salaryDistribute)
         throws URISyntaxException {
@@ -60,6 +65,16 @@ public class SalaryDistributeResource {
             .body(salaryDistribute);
     }
 
+    /**
+     * {@code PUT  /salary-distributes/:id} : Updates an existing salaryDistribute.
+     *
+     * @param id the id of the salaryDistribute to save.
+     * @param salaryDistribute the salaryDistribute to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated salaryDistribute,
+     * or with status {@code 400 (Bad Request)} if the salaryDistribute is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the salaryDistribute couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<SalaryDistribute> updateSalaryDistribute(
         @PathVariable(value = "id", required = false) final Long id,
@@ -83,6 +98,17 @@ public class SalaryDistributeResource {
             .body(salaryDistribute);
     }
 
+    /**
+     * {@code PATCH  /salary-distributes/:id} : Partial updates given fields of an existing salaryDistribute, field will ignore if it is null
+     *
+     * @param id the id of the salaryDistribute to save.
+     * @param salaryDistribute the salaryDistribute to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated salaryDistribute,
+     * or with status {@code 400 (Bad Request)} if the salaryDistribute is not valid,
+     * or with status {@code 404 (Not Found)} if the salaryDistribute is not found,
+     * or with status {@code 500 (Internal Server Error)} if the salaryDistribute couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SalaryDistribute> partialUpdateSalaryDistribute(
         @PathVariable(value = "id", required = false) final Long id,
@@ -126,6 +152,12 @@ public class SalaryDistributeResource {
         );
     }
 
+    /**
+     * {@code GET  /salary-distributes} : get all the salaryDistributes.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of salaryDistributes in body.
+     */
     @GetMapping("")
     public ResponseEntity<List<SalaryDistribute>> getAllSalaryDistributes(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
@@ -136,6 +168,12 @@ public class SalaryDistributeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    /**
+     * {@code GET  /salary-distributes/:id} : get the "id" salaryDistribute.
+     *
+     * @param id the id of the salaryDistribute to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the salaryDistribute, or with status {@code 404 (Not Found)}.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<SalaryDistribute> getSalaryDistribute(@PathVariable("id") Long id) {
         LOG.debug("REST request to get SalaryDistribute : {}", id);
@@ -143,6 +181,12 @@ public class SalaryDistributeResource {
         return ResponseUtil.wrapOrNotFound(salaryDistribute);
     }
 
+    /**
+     * {@code DELETE  /salary-distributes/:id} : delete the "id" salaryDistribute.
+     *
+     * @param id the id of the salaryDistribute to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSalaryDistribute(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SalaryDistribute : {}", id);

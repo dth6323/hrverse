@@ -21,7 +21,6 @@ type PayrollFormGroupContent = {
   salary: FormControl<IPayroll['salary']>;
   workDay: FormControl<IPayroll['workDay']>;
   employee: FormControl<IPayroll['employee']>;
-  wage: FormControl<IPayroll['wage']>;
   salaryDistribute: FormControl<IPayroll['salaryDistribute']>;
 };
 
@@ -49,7 +48,6 @@ export class PayrollFormService {
         validators: [Validators.required],
       }),
       employee: new FormControl(payrollRawValue.employee),
-      wage: new FormControl(payrollRawValue.wage),
       salaryDistribute: new FormControl(payrollRawValue.salaryDistribute),
     });
   }

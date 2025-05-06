@@ -24,6 +24,7 @@ describe('Contract Form Service', () => {
             endDate: expect.any(Object),
             status: expect.any(Object),
             contractCode: expect.any(Object),
+            wage: expect.any(Object),
             contractType: expect.any(Object),
           }),
         );
@@ -39,6 +40,7 @@ describe('Contract Form Service', () => {
             endDate: expect.any(Object),
             status: expect.any(Object),
             contractCode: expect.any(Object),
+            wage: expect.any(Object),
             contractType: expect.any(Object),
           }),
         );

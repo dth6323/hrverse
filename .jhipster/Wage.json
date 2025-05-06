@@ -24,9 +24,9 @@
   "pagination": "pagination",
   "relationships": [
     {
-      "otherEntityName": "payroll",
+      "otherEntityName": "contract",
       "otherEntityRelationshipName": "wage",
-      "relationshipName": "payroll",
+      "relationshipName": "contract",
       "relationshipSide": "right",
       "relationshipType": "one-to-many"
     }

@@ -7,10 +7,12 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { IWage } from 'app/entities/wage/wage.model';
+import { WageService } from 'app/entities/wage/service/wage.service';
 import { IContractType } from 'app/entities/contract-type/contract-type.model';
 import { ContractTypeService } from 'app/entities/contract-type/service/contract-type.service';
-import { IContract } from '../contract.model';
 import { ContractService } from '../service/contract.service';
+import { IContract } from '../contract.model';
 import { ContractFormGroup, ContractFormService } from './contract-form.service';
 
 @Component({
@@ -23,15 +25,19 @@ export class ContractUpdateComponent implements OnInit {
   isSaving = false;
   contract: IContract | null = null;
 
+  wagesSharedCollection: IWage[] = [];
   contractTypesSharedCollection: IContractType[] = [];
 
   protected contractService = inject(ContractService);
   protected contractFormService = inject(ContractFormService);
+  protected wageService = inject(WageService);
   protected contractTypeService = inject(ContractTypeService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ContractFormGroup = this.contractFormService.createContractFormGroup();
+
+  compareWage = (o1: IWage | null, o2: IWage | null): boolean => this.wageService.compareWage(o1, o2);
 
   compareContractType = (o1: IContractType | null, o2: IContractType | null): boolean =>
     this.contractTypeService.compareContractType(o1, o2);
@@ -84,6 +90,7 @@ export class ContractUpdateComponent implements OnInit {
     this.contract = contract;
     this.contractFormService.resetForm(this.editForm, contract);
 
+    this.wagesSharedCollection = this.wageService.addWageToCollectionIfMissing<IWage>(this.wagesSharedCollection, contract.wage);
     this.contractTypesSharedCollection = this.contractTypeService.addContractTypeToCollectionIfMissing<IContractType>(
       this.contractTypesSharedCollection,
       contract.contractType,
@@ -91,6 +98,12 @@ export class ContractUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
+    this.wageService
+      .query()
+      .pipe(map((res: HttpResponse<IWage[]>) => res.body ?? []))
+      .pipe(map((wages: IWage[]) => this.wageService.addWageToCollectionIfMissing<IWage>(wages, this.contract?.wage)))
+      .subscribe((wages: IWage[]) => (this.wagesSharedCollection = wages));
+
     this.contractTypeService
       .query()
       .pipe(map((res: HttpResponse<IContractType[]>) => res.body ?? []))

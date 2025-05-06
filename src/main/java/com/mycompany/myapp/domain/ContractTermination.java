@@ -35,7 +35,7 @@ public class ContractTermination implements Serializable {
     private Float compensation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "contractType", "employees", "contractTerminations" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "wage", "contractType", "employees", "contractTerminations" }, allowSetters = true)
     private Contract contract;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

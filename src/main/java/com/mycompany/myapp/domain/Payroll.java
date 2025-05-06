@@ -38,10 +38,6 @@ public class Payroll implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "payrolls" }, allowSetters = true)
-    private Wage wage;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "payrolls" }, allowSetters = true)
     private SalaryDistribute salaryDistribute;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -95,19 +91,6 @@ public class Payroll implements Serializable {
 
     public Payroll employee(Employee employee) {
         this.setEmployee(employee);
-        return this;
-    }
-
-    public Wage getWage() {
-        return this.wage;
-    }
-
-    public void setWage(Wage wage) {
-        this.wage = wage;
-    }
-
-    public Payroll wage(Wage wage) {
-        this.setWage(wage);
         return this;
     }
 

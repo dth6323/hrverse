@@ -109,6 +109,16 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_wage" jhiTranslate="hrVerseApp.contract.wage">Wage</label>
+          <select class="form-control" id="field_wage" data-cy="wage" name="wage" formControlName="wage" [compareWith]="compareWage">
+            <option [ngValue]="null"></option>
+            @for (wageOption of wagesSharedCollection; track $index) {
+              <option [ngValue]="wageOption">{{ wageOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_contractType" jhiTranslate="hrVerseApp.contract.contractType">Contract Type</label>
           <select
             class="form-control"

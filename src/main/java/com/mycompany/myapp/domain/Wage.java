@@ -36,8 +36,8 @@ public class Wage implements Serializable {
     private Float allowance;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wage")
-    @JsonIgnoreProperties(value = { "employee", "wage", "salaryDistribute" }, allowSetters = true)
-    private Set<Payroll> payrolls = new HashSet<>();
+    @JsonIgnoreProperties(value = { "wage", "contractType", "employees", "contractTerminations" }, allowSetters = true)
+    private Set<Contract> contracts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -93,34 +93,34 @@ public class Wage implements Serializable {
         this.allowance = allowance;
     }
 
-    public Set<Payroll> getPayrolls() {
-        return this.payrolls;
+    public Set<Contract> getContracts() {
+        return this.contracts;
     }
 
-    public void setPayrolls(Set<Payroll> payrolls) {
-        if (this.payrolls != null) {
-            this.payrolls.forEach(i -> i.setWage(null));
+    public void setContracts(Set<Contract> contracts) {
+        if (this.contracts != null) {
+            this.contracts.forEach(i -> i.setWage(null));
         }
-        if (payrolls != null) {
-            payrolls.forEach(i -> i.setWage(this));
+        if (contracts != null) {
+            contracts.forEach(i -> i.setWage(this));
         }
-        this.payrolls = payrolls;
+        this.contracts = contracts;
     }
 
-    public Wage payrolls(Set<Payroll> payrolls) {
-        this.setPayrolls(payrolls);
+    public Wage contracts(Set<Contract> contracts) {
+        this.setContracts(contracts);
         return this;
     }
 
-    public Wage addPayroll(Payroll payroll) {
-        this.payrolls.add(payroll);
-        payroll.setWage(this);
+    public Wage addContract(Contract contract) {
+        this.contracts.add(contract);
+        contract.setWage(this);
         return this;
     }
 
-    public Wage removePayroll(Payroll payroll) {
-        this.payrolls.remove(payroll);
-        payroll.setWage(null);
+    public Wage removeContract(Contract contract) {
+        this.contracts.remove(contract);
+        contract.setWage(null);
         return this;
     }
 

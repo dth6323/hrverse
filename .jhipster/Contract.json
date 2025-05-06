@@ -31,6 +31,13 @@
   "pagination": "pagination",
   "relationships": [
     {
+      "otherEntityName": "wage",
+      "otherEntityRelationshipName": "contract",
+      "relationshipName": "wage",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
       "otherEntityName": "contractType",
       "otherEntityRelationshipName": "contract",
       "relationshipName": "contractType",

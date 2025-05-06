@@ -44,6 +44,10 @@ public class Contract implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "contracts" }, allowSetters = true)
+    private Wage wage;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "contracts" }, allowSetters = true)
     private ContractType contractType;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract")
@@ -122,6 +126,19 @@ public class Contract implements Serializable {
 
     public void setContractCode(String contractCode) {
         this.contractCode = contractCode;
+    }
+
+    public Wage getWage() {
+        return this.wage;
+    }
+
+    public void setWage(Wage wage) {
+        this.wage = wage;
+    }
+
+    public Contract wage(Wage wage) {
+        this.setWage(wage);
+        return this;
     }
 
     public ContractType getContractType() {

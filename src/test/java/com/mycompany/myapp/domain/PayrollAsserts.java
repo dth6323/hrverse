@@ -61,7 +61,6 @@ public class PayrollAsserts {
         assertThat(expected)
             .as("Verify Payroll relationships")
             .satisfies(e -> assertThat(e.getEmployee()).as("check employee").isEqualTo(actual.getEmployee()))
-            .satisfies(e -> assertThat(e.getWage()).as("check wage").isEqualTo(actual.getWage()))
             .satisfies(e -> assertThat(e.getSalaryDistribute()).as("check salaryDistribute").isEqualTo(actual.getSalaryDistribute()));
     }
 }

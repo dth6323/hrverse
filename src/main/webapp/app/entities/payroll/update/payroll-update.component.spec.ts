@@ -6,8 +6,6 @@ import { Subject, from, of } from 'rxjs';
 
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { EmployeeService } from 'app/entities/employee/service/employee.service';
-import { IWage } from 'app/entities/wage/wage.model';
-import { WageService } from 'app/entities/wage/service/wage.service';
 import { ISalaryDistribute } from 'app/entities/salary-distribute/salary-distribute.model';
 import { SalaryDistributeService } from 'app/entities/salary-distribute/service/salary-distribute.service';
 import { IPayroll } from '../payroll.model';
@@ -23,7 +21,6 @@ describe('Payroll Management Update Component', () => {
   let payrollFormService: PayrollFormService;
   let payrollService: PayrollService;
   let employeeService: EmployeeService;
-  let wageService: WageService;
   let salaryDistributeService: SalaryDistributeService;
 
   beforeEach(() => {
@@ -48,7 +45,6 @@ describe('Payroll Management Update Component', () => {
     payrollFormService = TestBed.inject(PayrollFormService);
     payrollService = TestBed.inject(PayrollService);
     employeeService = TestBed.inject(EmployeeService);
-    wageService = TestBed.inject(WageService);
     salaryDistributeService = TestBed.inject(SalaryDistributeService);
 
     comp = fixture.componentInstance;
@@ -77,28 +73,6 @@ describe('Payroll Management Update Component', () => {
       expect(comp.employeesSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Wage query and add missing value', () => {
-      const payroll: IPayroll = { id: 456 };
-      const wage: IWage = { id: 10137 };
-      payroll.wage = wage;
-
-      const wageCollection: IWage[] = [{ id: 32598 }];
-      jest.spyOn(wageService, 'query').mockReturnValue(of(new HttpResponse({ body: wageCollection })));
-      const additionalWages = [wage];
-      const expectedCollection: IWage[] = [...additionalWages, ...wageCollection];
-      jest.spyOn(wageService, 'addWageToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ payroll });
-      comp.ngOnInit();
-
-      expect(wageService.query).toHaveBeenCalled();
-      expect(wageService.addWageToCollectionIfMissing).toHaveBeenCalledWith(
-        wageCollection,
-        ...additionalWages.map(expect.objectContaining),
-      );
-      expect(comp.wagesSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should call SalaryDistribute query and add missing value', () => {
       const payroll: IPayroll = { id: 456 };
       const salaryDistribute: ISalaryDistribute = { id: 9713 };
@@ -125,8 +99,6 @@ describe('Payroll Management Update Component', () => {
       const payroll: IPayroll = { id: 456 };
       const employee: IEmployee = { id: 30898 };
       payroll.employee = employee;
-      const wage: IWage = { id: 2566 };
-      payroll.wage = wage;
       const salaryDistribute: ISalaryDistribute = { id: 9729 };
       payroll.salaryDistribute = salaryDistribute;
 
@@ -134,7 +106,6 @@ describe('Payroll Management Update Component', () => {
       comp.ngOnInit();
 
       expect(comp.employeesSharedCollection).toContain(employee);
-      expect(comp.wagesSharedCollection).toContain(wage);
       expect(comp.salaryDistributesSharedCollection).toContain(salaryDistribute);
       expect(comp.payroll).toEqual(payroll);
     });
@@ -216,16 +187,6 @@ describe('Payroll Management Update Component', () => {
         jest.spyOn(employeeService, 'compareEmployee');
         comp.compareEmployee(entity, entity2);
         expect(employeeService.compareEmployee).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareWage', () => {
-      it('Should forward to wageService', () => {
-        const entity = { id: 123 };
-        const entity2 = { id: 456 };
-        jest.spyOn(wageService, 'compareWage');
-        comp.compareWage(entity, entity2);
-        expect(wageService.compareWage).toHaveBeenCalledWith(entity, entity2);
       });
     });
 

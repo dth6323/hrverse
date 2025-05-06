@@ -57,7 +57,7 @@ public class Employee implements Serializable {
     private Department department;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "contractType", "employees", "contractTerminations" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "wage", "contractType", "employees", "contractTerminations" }, allowSetters = true)
     private Contract contract;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
@@ -65,7 +65,7 @@ public class Employee implements Serializable {
     private Set<Attendance> attendances = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-    @JsonIgnoreProperties(value = { "employee", "wage", "salaryDistribute" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "employee", "salaryDistribute" }, allowSetters = true)
     private Set<Payroll> payrolls = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")

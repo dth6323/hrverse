@@ -26,13 +26,6 @@
       "relationshipType": "many-to-one"
     },
     {
-      "otherEntityName": "wage",
-      "otherEntityRelationshipName": "payroll",
-      "relationshipName": "wage",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
       "otherEntityName": "salaryDistribute",
       "otherEntityRelationshipName": "payroll",
       "relationshipName": "salaryDistribute",

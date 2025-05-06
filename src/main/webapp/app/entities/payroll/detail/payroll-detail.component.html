@@ -31,14 +31,6 @@
               </div>
             }
           </dd>
-          <dt><span jhiTranslate="hrVerseApp.payroll.wage">Wage</span></dt>
-          <dd>
-            @if (payroll()!.wage) {
-              <div>
-                <a [routerLink]="['/wage', payroll()!.wage?.id, 'view']">{{ payrollRef.wage?.id }}</a>
-              </div>
-            }
-          </dd>
           <dt><span jhiTranslate="hrVerseApp.payroll.salaryDistribute">Salary Distribute</span></dt>
           <dd>
             @if (payroll()!.salaryDistribute) {

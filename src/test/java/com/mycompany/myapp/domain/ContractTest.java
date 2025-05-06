@@ -4,6 +4,7 @@ import static com.mycompany.myapp.domain.ContractTerminationTestSamples.*;
 import static com.mycompany.myapp.domain.ContractTestSamples.*;
 import static com.mycompany.myapp.domain.ContractTypeTestSamples.*;
 import static com.mycompany.myapp.domain.EmployeeTestSamples.*;
+import static com.mycompany.myapp.domain.WageTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mycompany.myapp.web.rest.TestUtil;
@@ -25,6 +26,18 @@ class ContractTest {
 
         contract2 = getContractSample2();
         assertThat(contract1).isNotEqualTo(contract2);
+    }
+
+    @Test
+    void wageTest() {
+        Contract contract = getContractRandomSampleGenerator();
+        Wage wageBack = getWageRandomSampleGenerator();
+
+        contract.setWage(wageBack);
+        assertThat(contract.getWage()).isEqualTo(wageBack);
+
+        contract.wage(null);
+        assertThat(contract.getWage()).isNull();
     }
 
     @Test

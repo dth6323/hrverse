@@ -3,7 +3,6 @@ package com.mycompany.myapp.domain;
 import static com.mycompany.myapp.domain.EmployeeTestSamples.*;
 import static com.mycompany.myapp.domain.PayrollTestSamples.*;
 import static com.mycompany.myapp.domain.SalaryDistributeTestSamples.*;
-import static com.mycompany.myapp.domain.WageTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mycompany.myapp.web.rest.TestUtil;
@@ -35,18 +34,6 @@ class PayrollTest {
 
         payroll.employee(null);
         assertThat(payroll.getEmployee()).isNull();
-    }
-
-    @Test
-    void wageTest() {
-        Payroll payroll = getPayrollRandomSampleGenerator();
-        Wage wageBack = getWageRandomSampleGenerator();
-
-        payroll.setWage(wageBack);
-        assertThat(payroll.getWage()).isEqualTo(wageBack);
-
-        payroll.wage(null);
-        assertThat(payroll.getWage()).isNull();
     }
 
     @Test

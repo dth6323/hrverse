@@ -62,12 +62,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="wage.id">
-              <div class="d-flex">
-                <span jhiTranslate="hrVerseApp.payroll.wage">Wage</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="salaryDistribute.id">
               <div class="d-flex">
                 <span jhiTranslate="hrVerseApp.payroll.salaryDistribute">Salary Distribute</span>
@@ -89,13 +83,6 @@
                 @if (payroll.employee) {
                   <div>
                     <a [routerLink]="['/employee', payroll.employee.id, 'view']">{{ payroll.employee.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (payroll.wage) {
-                  <div>
-                    <a [routerLink]="['/wage', payroll.wage.id, 'view']">{{ payroll.wage.id }}</a>
                   </div>
                 }
               </td>
