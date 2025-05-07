@@ -33,7 +33,9 @@
           </dd>
           <dt><span jhiTranslate="hrVerseApp.employee.gender">Gender</span></dt>
           <dd>
-            <span>{{ employeeRef.gender }}</span>
+            <span [jhiTranslate]="'hrVerseApp.Gender.' + (employeeRef.gender ?? 'null')">{{
+              { null: '', MALE: 'MALE', FEMALE: 'FEMALE' }[employeeRef.gender ?? 'null']
+            }}</span>
           </dd>
           <dt><span jhiTranslate="hrVerseApp.employee.dateOfBirth">Date Of Birth</span></dt>
           <dd>
@@ -44,14 +46,6 @@
             @if (employee()!.department) {
               <div>
                 <a [routerLink]="['/department', employee()!.department?.id, 'view']">{{ employeeRef.department?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="hrVerseApp.employee.contract">Contract</span></dt>
-          <dd>
-            @if (employee()!.contract) {
-              <div>
-                <a [routerLink]="['/contract', employee()!.contract?.id, 'view']">{{ employeeRef.contract?.id }}</a>
               </div>
             }
           </dd>

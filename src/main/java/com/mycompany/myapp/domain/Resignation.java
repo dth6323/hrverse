@@ -1,6 +1,7 @@
 package com.mycompany.myapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mycompany.myapp.domain.enumeration.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -36,9 +37,9 @@ public class Resignation implements Serializable {
     private String reason;
 
     @NotNull
-    @Size(max = 20)
-    @Column(name = "status", length = 20, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
 
     @Size(max = 500)
     @Column(name = "notes", length = 500)
@@ -46,7 +47,7 @@ public class Resignation implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "department", "contract", "attendances", "payrolls", "resignations", "rewardPunishments" },
+        value = { "department", "contracts", "attendances", "payrolls", "resignations", "rewardPunishments" },
         allowSetters = true
     )
     private Employee employee;
@@ -105,16 +106,16 @@ public class Resignation implements Serializable {
         this.reason = reason;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return this.status;
     }
 
-    public Resignation status(String status) {
+    public Resignation status(Status status) {
         this.setStatus(status);
         return this;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

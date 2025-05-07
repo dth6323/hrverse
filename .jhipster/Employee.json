@@ -30,8 +30,9 @@
     },
     {
       "fieldName": "gender",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Gender",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "MALE,FEMALE"
     },
     {
       "fieldName": "dateOfBirth",
@@ -53,8 +54,8 @@
       "otherEntityName": "contract",
       "otherEntityRelationshipName": "employee",
       "relationshipName": "contract",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "attendance",

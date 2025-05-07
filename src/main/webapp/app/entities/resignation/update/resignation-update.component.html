@@ -94,16 +94,16 @@
         @let statusRef = editForm.get('status')!;
         <div class="mb-3">
           <label class="form-label" for="field_status" jhiTranslate="hrVerseApp.resignation.status">Status</label>
-          <input type="text" class="form-control" name="status" id="field_status" data-cy="status" formControlName="status" />
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'hrVerseApp.Status.null' | translate }}</option>
+            @for (status of statusValues; track $index) {
+              <option [value]="status">{{ 'hrVerseApp.Status.' + status | translate }}</option>
+            }
+          </select>
           @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
             <div>
               @if (editForm.get('status')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
-              }
-              @if (editForm.get('status')?.errors?.maxlength) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '20' }"
-                  >This field cannot be longer than 20 characters.</small
-                >
               }
             </div>
           }

@@ -25,7 +25,6 @@ type EmployeeFormGroupContent = {
   gender: FormControl<IEmployee['gender']>;
   dateOfBirth: FormControl<IEmployee['dateOfBirth']>;
   department: FormControl<IEmployee['department']>;
-  contract: FormControl<IEmployee['contract']>;
 };
 
 export type EmployeeFormGroup = FormGroup<EmployeeFormGroupContent>;
@@ -64,7 +63,6 @@ export class EmployeeFormService {
         validators: [Validators.required],
       }),
       department: new FormControl(employeeRawValue.department),
-      contract: new FormControl(employeeRawValue.contract),
     });
   }
 

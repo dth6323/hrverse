@@ -70,6 +70,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="employee.id">
+              <div class="d-flex">
+                <span jhiTranslate="hrVerseApp.contract.employee">Employee</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="wage.id">
               <div class="d-flex">
                 <span jhiTranslate="hrVerseApp.contract.wage">Wage</span>
@@ -93,8 +99,17 @@
               </td>
               <td>{{ contract.startDate | formatMediumDate }}</td>
               <td>{{ contract.endDate | formatMediumDate }}</td>
-              <td>{{ contract.status }}</td>
+              <td [jhiTranslate]="'hrVerseApp.Status.' + (contract.status ?? 'null')">
+                {{ { null: '', ACTIVE: 'ACTIVE', DESTROY: 'DESTROY', PENDING: 'PENDING' }[contract.status ?? 'null'] }}
+              </td>
               <td>{{ contract.contractCode }}</td>
+              <td>
+                @if (contract.employee) {
+                  <div>
+                    <a [routerLink]="['/employee', contract.employee.id, 'view']">{{ contract.employee.id }}</a>
+                  </div>
+                }
+              </td>
               <td>
                 @if (contract.wage) {
                   <div>

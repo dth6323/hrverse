@@ -1,3 +1,14 @@
+enum Gender {
+  MALE,
+  FEMALE
+}
+
+// Định nghĩa enum cho Status
+enum Status {
+  ACTIVE,
+  DESTROY,
+  PENDING
+}
 entity Department {
   DepartmentName String required maxlength(50),
   Address String required maxlength(50)
@@ -21,14 +32,14 @@ entity Employee {
   Phone String required maxlength(20),
   Email String required maxlength(255),
   Address String required maxlength(255),
-  Gender Integer required,
+  Gender Gender required,
   DateOfBirth LocalDate required
 }
 
 entity Contract {
   StartDate LocalDate required,
   EndDate LocalDate required,
-  Status String required maxlength(50),
+  Status Status required,
   ContractCode String required maxlength(20) unique
 }
 
@@ -59,7 +70,7 @@ entity Resignation {
   SubmissionDate LocalDate required,
   EffectiveDate LocalDate required,
   Reason String required maxlength(255),
-  Status String required maxlength(20),
+  Status Status required,
   Notes String maxlength(500)
 }
 
@@ -71,7 +82,7 @@ entity RewardPunishment {
 
 relationship ManyToOne {
   Employee to Department,
-  Employee to Contract,
+  Contract to Employee,
   Attendance to Employee,
   Payroll to Employee,
   Contract to Wage,

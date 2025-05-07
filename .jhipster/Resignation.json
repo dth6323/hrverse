@@ -22,9 +22,9 @@
     },
     {
       "fieldName": "status",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "maxlength"],
-      "fieldValidateRulesMaxlength": "20"
+      "fieldType": "Status",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ACTIVE,DESTROY,PENDING"
     },
     {
       "fieldName": "notes",

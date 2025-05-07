@@ -35,7 +35,7 @@ public class Department implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
     @JsonIgnoreProperties(
-        value = { "department", "contract", "attendances", "payrolls", "resignations", "rewardPunishments" },
+        value = { "department", "contracts", "attendances", "payrolls", "resignations", "rewardPunishments" },
         allowSetters = true
     )
     private Set<Employee> employees = new HashSet<>();

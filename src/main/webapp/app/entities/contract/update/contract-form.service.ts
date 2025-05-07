@@ -22,6 +22,7 @@ type ContractFormGroupContent = {
   endDate: FormControl<IContract['endDate']>;
   status: FormControl<IContract['status']>;
   contractCode: FormControl<IContract['contractCode']>;
+  employee: FormControl<IContract['employee']>;
   wage: FormControl<IContract['wage']>;
   contractType: FormControl<IContract['contractType']>;
 };
@@ -50,11 +51,12 @@ export class ContractFormService {
         validators: [Validators.required],
       }),
       status: new FormControl(contractRawValue.status, {
-        validators: [Validators.required, Validators.maxLength(50)],
+        validators: [Validators.required],
       }),
       contractCode: new FormControl(contractRawValue.contractCode, {
         validators: [Validators.required, Validators.maxLength(20)],
       }),
+      employee: new FormControl(contractRawValue.employee),
       wage: new FormControl(contractRawValue.wage),
       contractType: new FormControl(contractRawValue.contractType),
     });

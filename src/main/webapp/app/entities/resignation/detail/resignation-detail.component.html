@@ -29,7 +29,9 @@
           </dd>
           <dt><span jhiTranslate="hrVerseApp.resignation.status">Status</span></dt>
           <dd>
-            <span>{{ resignationRef.status }}</span>
+            <span [jhiTranslate]="'hrVerseApp.Status.' + (resignationRef.status ?? 'null')">{{
+              { null: '', ACTIVE: 'ACTIVE', DESTROY: 'DESTROY', PENDING: 'PENDING' }[resignationRef.status ?? 'null']
+            }}</span>
           </dd>
           <dt><span jhiTranslate="hrVerseApp.resignation.notes">Notes</span></dt>
           <dd>

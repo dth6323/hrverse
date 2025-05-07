@@ -9,8 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IDepartment } from 'app/entities/department/department.model';
 import { DepartmentService } from 'app/entities/department/service/department.service';
-import { IContract } from 'app/entities/contract/contract.model';
-import { ContractService } from 'app/entities/contract/service/contract.service';
+import { Gender } from 'app/entities/enumerations/gender.model';
 import { EmployeeService } from '../service/employee.service';
 import { IEmployee } from '../employee.model';
 import { EmployeeFormGroup, EmployeeFormService } from './employee-form.service';
@@ -24,22 +23,19 @@ import { EmployeeFormGroup, EmployeeFormService } from './employee-form.service'
 export class EmployeeUpdateComponent implements OnInit {
   isSaving = false;
   employee: IEmployee | null = null;
+  genderValues = Object.keys(Gender);
 
   departmentsSharedCollection: IDepartment[] = [];
-  contractsSharedCollection: IContract[] = [];
 
   protected employeeService = inject(EmployeeService);
   protected employeeFormService = inject(EmployeeFormService);
   protected departmentService = inject(DepartmentService);
-  protected contractService = inject(ContractService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: EmployeeFormGroup = this.employeeFormService.createEmployeeFormGroup();
 
   compareDepartment = (o1: IDepartment | null, o2: IDepartment | null): boolean => this.departmentService.compareDepartment(o1, o2);
-
-  compareContract = (o1: IContract | null, o2: IContract | null): boolean => this.contractService.compareContract(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ employee }) => {
@@ -93,10 +89,6 @@ export class EmployeeUpdateComponent implements OnInit {
       this.departmentsSharedCollection,
       employee.department,
     );
-    this.contractsSharedCollection = this.contractService.addContractToCollectionIfMissing<IContract>(
-      this.contractsSharedCollection,
-      employee.contract,
-    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -109,15 +101,5 @@ export class EmployeeUpdateComponent implements OnInit {
         ),
       )
       .subscribe((departments: IDepartment[]) => (this.departmentsSharedCollection = departments));
-
-    this.contractService
-      .query()
-      .pipe(map((res: HttpResponse<IContract[]>) => res.body ?? []))
-      .pipe(
-        map((contracts: IContract[]) =>
-          this.contractService.addContractToCollectionIfMissing<IContract>(contracts, this.employee?.contract),
-        ),
-      )
-      .subscribe((contracts: IContract[]) => (this.contractsSharedCollection = contracts));
   }
 }

@@ -16,12 +16,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="department"
                                  />
-
-        <addForeignKeyConstraint baseColumnNames="contract_id"
-                                 baseTableName="employee"
-                                 constraintName="fk_employee__contract_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="contract"
-                                 />
     </changeSet>
 </databaseChangeLog>

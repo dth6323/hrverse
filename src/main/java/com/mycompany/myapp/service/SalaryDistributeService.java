@@ -1,6 +1,7 @@
 package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.domain.Attendance;
+import com.mycompany.myapp.domain.Employee;
 import com.mycompany.myapp.domain.Payroll;
 import com.mycompany.myapp.domain.Wage;
 import com.mycompany.myapp.repository.AttendanceRepository;
@@ -14,7 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SalaryDistributeService {
 
     SalaryDistributeRepository salaryDistributeRepository;
@@ -35,15 +38,14 @@ public class SalaryDistributeService {
         for (Map.Entry<Long, Integer> entry : map.entrySet()) {
             Payroll payroll = new Payroll();
             Wage wage = new Wage();
-            wage.setId(1L);
+            Employee employee = employeeRepository.findById(entry.getKey()).orElseThrow(EntityNotFoundException::new);
             payroll.setWorkDay(entry.getValue());
             payroll.setSalary(1);
-            payroll.setEmployee(
-                employeeRepository.findById(entry.getKey()).orElseThrow(() -> new EntityNotFoundException("Employee not found"))
-            );
+            payroll.setEmployee(employee);
+            wage.setId(employee.getId());
             payroll.setSalaryDistribute(
                 salaryDistributeRepository
-                    .findById(entry.getKey())
+                    .findById(Long.valueOf(request.getId()))
                     .orElseThrow(() -> new EntityNotFoundException("SalaryDistribute not found"))
             );
             payrolls.add(payroll);

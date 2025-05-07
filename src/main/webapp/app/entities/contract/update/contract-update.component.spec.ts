@@ -4,6 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, from, of } from 'rxjs';
 
+import { IEmployee } from 'app/entities/employee/employee.model';
+import { EmployeeService } from 'app/entities/employee/service/employee.service';
 import { IWage } from 'app/entities/wage/wage.model';
 import { WageService } from 'app/entities/wage/service/wage.service';
 import { IContractType } from 'app/entities/contract-type/contract-type.model';
@@ -20,6 +22,7 @@ describe('Contract Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let contractFormService: ContractFormService;
   let contractService: ContractService;
+  let employeeService: EmployeeService;
   let wageService: WageService;
   let contractTypeService: ContractTypeService;
 
@@ -44,6 +47,7 @@ describe('Contract Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     contractFormService = TestBed.inject(ContractFormService);
     contractService = TestBed.inject(ContractService);
+    employeeService = TestBed.inject(EmployeeService);
     wageService = TestBed.inject(WageService);
     contractTypeService = TestBed.inject(ContractTypeService);
 
@@ -51,6 +55,28 @@ describe('Contract Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
+    it('Should call Employee query and add missing value', () => {
+      const contract: IContract = { id: 456 };
+      const employee: IEmployee = { id: 19147 };
+      contract.employee = employee;
+
+      const employeeCollection: IEmployee[] = [{ id: 12791 }];
+      jest.spyOn(employeeService, 'query').mockReturnValue(of(new HttpResponse({ body: employeeCollection })));
+      const additionalEmployees = [employee];
+      const expectedCollection: IEmployee[] = [...additionalEmployees, ...employeeCollection];
+      jest.spyOn(employeeService, 'addEmployeeToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ contract });
+      comp.ngOnInit();
+
+      expect(employeeService.query).toHaveBeenCalled();
+      expect(employeeService.addEmployeeToCollectionIfMissing).toHaveBeenCalledWith(
+        employeeCollection,
+        ...additionalEmployees.map(expect.objectContaining),
+      );
+      expect(comp.employeesSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should call Wage query and add missing value', () => {
       const contract: IContract = { id: 456 };
       const wage: IWage = { id: 10137 };
@@ -97,6 +123,8 @@ describe('Contract Management Update Component', () => {
 
     it('Should update editForm', () => {
       const contract: IContract = { id: 456 };
+      const employee: IEmployee = { id: 31803 };
+      contract.employee = employee;
       const wage: IWage = { id: 2566 };
       contract.wage = wage;
       const contractType: IContractType = { id: 4887 };
@@ -105,6 +133,7 @@ describe('Contract Management Update Component', () => {
       activatedRoute.data = of({ contract });
       comp.ngOnInit();
 
+      expect(comp.employeesSharedCollection).toContain(employee);
       expect(comp.wagesSharedCollection).toContain(wage);
       expect(comp.contractTypesSharedCollection).toContain(contractType);
       expect(comp.contract).toEqual(contract);
@@ -180,6 +209,16 @@ describe('Contract Management Update Component', () => {
   });
 
   describe('Compare relationships', () => {
+    describe('compareEmployee', () => {
+      it('Should forward to employeeService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(employeeService, 'compareEmployee');
+        comp.compareEmployee(entity, entity2);
+        expect(employeeService.compareEmployee).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
     describe('compareWage', () => {
       it('Should forward to wageService', () => {
         const entity = { id: 123 };

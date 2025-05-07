@@ -95,7 +95,9 @@
               <td>{{ resignation.submissionDate | formatMediumDate }}</td>
               <td>{{ resignation.effectiveDate | formatMediumDate }}</td>
               <td>{{ resignation.reason }}</td>
-              <td>{{ resignation.status }}</td>
+              <td [jhiTranslate]="'hrVerseApp.Status.' + (resignation.status ?? 'null')">
+                {{ { null: '', ACTIVE: 'ACTIVE', DESTROY: 'DESTROY', PENDING: 'PENDING' }[resignation.status ?? 'null'] }}
+              </td>
               <td>{{ resignation.notes }}</td>
               <td>
                 @if (resignation.employee) {

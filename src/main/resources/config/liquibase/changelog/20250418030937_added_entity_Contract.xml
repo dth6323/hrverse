@@ -20,11 +20,14 @@
             <column name="end_date" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="status" type="varchar(50)">
+            <column name="status" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="contract_code" type="varchar(20)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="ux_contract__contract_code" />
+            </column>
+            <column name="employee_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <column name="wage_id" type="bigint">
                 <constraints nullable="true" />

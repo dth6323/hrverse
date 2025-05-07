@@ -1,0 +1,10 @@
+{
+  "hrVerseApp": {
+    "Status": {
+      "null": "",
+      "ACTIVE": "ACTIVE",
+      "DESTROY": "DESTROY",
+      "PENDING": "PENDING"
+    }
+  }
+}

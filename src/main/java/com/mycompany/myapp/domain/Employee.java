@@ -1,6 +1,7 @@
 package com.mycompany.myapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mycompany.myapp.domain.enumeration.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -45,8 +46,9 @@ public class Employee implements Serializable {
     private String address;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
-    private Integer gender;
+    private Gender gender;
 
     @NotNull
     @Column(name = "date_of_birth", nullable = false)
@@ -56,9 +58,9 @@ public class Employee implements Serializable {
     @JsonIgnoreProperties(value = { "employees" }, allowSetters = true)
     private Department department;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "wage", "contractType", "employees", "contractTerminations" }, allowSetters = true)
-    private Contract contract;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    @JsonIgnoreProperties(value = { "employee", "wage", "contractType", "contractTerminations" }, allowSetters = true)
+    private Set<Contract> contracts = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
     @JsonIgnoreProperties(value = { "employee" }, allowSetters = true)
@@ -143,16 +145,16 @@ public class Employee implements Serializable {
         this.address = address;
     }
 
-    public Integer getGender() {
+    public Gender getGender() {
         return this.gender;
     }
 
-    public Employee gender(Integer gender) {
+    public Employee gender(Gender gender) {
         this.setGender(gender);
         return this;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -182,16 +184,34 @@ public class Employee implements Serializable {
         return this;
     }
 
-    public Contract getContract() {
-        return this.contract;
+    public Set<Contract> getContracts() {
+        return this.contracts;
     }
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
+    public void setContracts(Set<Contract> contracts) {
+        if (this.contracts != null) {
+            this.contracts.forEach(i -> i.setEmployee(null));
+        }
+        if (contracts != null) {
+            contracts.forEach(i -> i.setEmployee(this));
+        }
+        this.contracts = contracts;
     }
 
-    public Employee contract(Contract contract) {
-        this.setContract(contract);
+    public Employee contracts(Set<Contract> contracts) {
+        this.setContracts(contracts);
+        return this;
+    }
+
+    public Employee addContract(Contract contract) {
+        this.contracts.add(contract);
+        contract.setEmployee(this);
+        return this;
+    }
+
+    public Employee removeContract(Contract contract) {
+        this.contracts.remove(contract);
+        contract.setEmployee(null);
         return this;
     }
 
@@ -347,7 +367,7 @@ public class Employee implements Serializable {
             ", phone='" + getPhone() + "'" +
             ", email='" + getEmail() + "'" +
             ", address='" + getAddress() + "'" +
-            ", gender=" + getGender() +
+            ", gender='" + getGender() + "'" +
             ", dateOfBirth='" + getDateOfBirth() + "'" +
             "}";
     }

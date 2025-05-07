@@ -9,8 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { EmployeeService } from 'app/entities/employee/service/employee.service';
-import { IResignation } from '../resignation.model';
+import { Status } from 'app/entities/enumerations/status.model';
 import { ResignationService } from '../service/resignation.service';
+import { IResignation } from '../resignation.model';
 import { ResignationFormGroup, ResignationFormService } from './resignation-form.service';
 
 @Component({
@@ -22,6 +23,7 @@ import { ResignationFormGroup, ResignationFormService } from './resignation-form
 export class ResignationUpdateComponent implements OnInit {
   isSaving = false;
   resignation: IResignation | null = null;
+  statusValues = Object.keys(Status);
 
   employeesSharedCollection: IEmployee[] = [];
 

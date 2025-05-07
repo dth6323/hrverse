@@ -7,31 +7,32 @@ export const sampleWithRequiredData: IResignation = {
   submissionDate: dayjs('2025-04-17'),
   effectiveDate: dayjs('2025-04-17'),
   reason: 'nippy',
-  status: 'because repeatedly',
+  status: 'DESTROY',
 };
 
 export const sampleWithPartialData: IResignation = {
-  id: 12297,
+  id: 30579,
   submissionDate: dayjs('2025-04-17'),
   effectiveDate: dayjs('2025-04-17'),
-  reason: 'trim',
-  status: 'disbar academics',
+  reason: 'a case',
+  status: 'DESTROY',
+  notes: 'palatable blink',
 };
 
 export const sampleWithFullData: IResignation = {
-  id: 28700,
+  id: 13968,
   submissionDate: dayjs('2025-04-17'),
   effectiveDate: dayjs('2025-04-17'),
-  reason: 'since lest',
-  status: 'since along royal',
-  notes: 'metallic',
+  reason: 'after plan swing',
+  status: 'PENDING',
+  notes: 'feather',
 };
 
 export const sampleWithNewData: NewResignation = {
   submissionDate: dayjs('2025-04-17'),
-  effectiveDate: dayjs('2025-04-17'),
-  reason: 'proliferate circa',
-  status: 'phew disapprove',
+  effectiveDate: dayjs('2025-04-18'),
+  reason: 'topsail tedious rigid',
+  status: 'ACTIVE',
   id: null,
 };
 

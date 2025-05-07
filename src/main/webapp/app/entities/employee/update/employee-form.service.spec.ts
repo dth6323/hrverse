@@ -27,7 +27,6 @@ describe('Employee Form Service', () => {
             gender: expect.any(Object),
             dateOfBirth: expect.any(Object),
             department: expect.any(Object),
-            contract: expect.any(Object),
           }),
         );
       });
@@ -45,7 +44,6 @@ describe('Employee Form Service', () => {
             gender: expect.any(Object),
             dateOfBirth: expect.any(Object),
             department: expect.any(Object),
-            contract: expect.any(Object),
           }),
         );
       });

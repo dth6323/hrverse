@@ -53,7 +53,7 @@ export class ResignationFormService {
         validators: [Validators.required, Validators.maxLength(255)],
       }),
       status: new FormControl(resignationRawValue.status, {
-        validators: [Validators.required, Validators.maxLength(20)],
+        validators: [Validators.required],
       }),
       notes: new FormControl(resignationRawValue.notes, {
         validators: [Validators.maxLength(500)],

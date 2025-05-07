@@ -6,31 +6,31 @@ export const sampleWithRequiredData: IContract = {
   id: 13332,
   startDate: dayjs('2025-04-17'),
   endDate: dayjs('2025-04-17'),
-  status: 'nor reboot',
-  contractCode: 'presume surprisingly',
+  status: 'DESTROY',
+  contractCode: 'regarding sans presu',
 };
 
 export const sampleWithPartialData: IContract = {
-  id: 23558,
+  id: 19267,
   startDate: dayjs('2025-04-17'),
   endDate: dayjs('2025-04-17'),
-  status: 'scrap',
-  contractCode: 'galvanize helplessly',
+  status: 'DESTROY',
+  contractCode: 'hoarse since within',
 };
 
 export const sampleWithFullData: IContract = {
-  id: 11762,
+  id: 9193,
   startDate: dayjs('2025-04-17'),
   endDate: dayjs('2025-04-18'),
-  status: 'hard-to-find pro',
-  contractCode: 'tributary provided m',
+  status: 'DESTROY',
+  contractCode: 'before replacement w',
 };
 
 export const sampleWithNewData: NewContract = {
   startDate: dayjs('2025-04-17'),
   endDate: dayjs('2025-04-17'),
-  status: 'yum',
-  contractCode: 'ha painfully',
+  status: 'PENDING',
+  contractCode: 'righteously sometime',
   id: null,
 };
 

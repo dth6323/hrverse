@@ -90,18 +90,17 @@
         @let genderRef = editForm.get('gender')!;
         <div class="mb-3">
           <label class="form-label" for="field_gender" jhiTranslate="hrVerseApp.employee.gender">Gender</label>
-          <input type="number" class="form-control" name="gender" id="field_gender" data-cy="gender" formControlName="gender" />
+          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
+            <option [ngValue]="null">{{ 'hrVerseApp.Gender.null' | translate }}</option>
+            @for (gender of genderValues; track $index) {
+              <option [value]="gender">{{ 'hrVerseApp.Gender.' + gender | translate }}</option>
+            }
+          </select>
           @if (genderRef.invalid && (genderRef.dirty || genderRef.touched)) {
             <div>
               @if (editForm.get('gender')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
               }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('gender')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >This field should be a number.</small
-              >
             </div>
           }
         </div>
@@ -146,23 +145,6 @@
             <option [ngValue]="null"></option>
             @for (departmentOption of departmentsSharedCollection; track $index) {
               <option [ngValue]="departmentOption">{{ departmentOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_contract" jhiTranslate="hrVerseApp.employee.contract">Contract</label>
-          <select
-            class="form-control"
-            id="field_contract"
-            data-cy="contract"
-            name="contract"
-            formControlName="contract"
-            [compareWith]="compareContract"
-          >
-            <option [ngValue]="null"></option>
-            @for (contractOption of contractsSharedCollection; track $index) {
-              <option [ngValue]="contractOption">{{ contractOption.id }}</option>
             }
           </select>
         </div>

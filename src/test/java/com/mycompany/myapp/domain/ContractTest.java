@@ -29,6 +29,18 @@ class ContractTest {
     }
 
     @Test
+    void employeeTest() {
+        Contract contract = getContractRandomSampleGenerator();
+        Employee employeeBack = getEmployeeRandomSampleGenerator();
+
+        contract.setEmployee(employeeBack);
+        assertThat(contract.getEmployee()).isEqualTo(employeeBack);
+
+        contract.employee(null);
+        assertThat(contract.getEmployee()).isNull();
+    }
+
+    @Test
     void wageTest() {
         Contract contract = getContractRandomSampleGenerator();
         Wage wageBack = getWageRandomSampleGenerator();
@@ -50,28 +62,6 @@ class ContractTest {
 
         contract.contractType(null);
         assertThat(contract.getContractType()).isNull();
-    }
-
-    @Test
-    void employeeTest() {
-        Contract contract = getContractRandomSampleGenerator();
-        Employee employeeBack = getEmployeeRandomSampleGenerator();
-
-        contract.addEmployee(employeeBack);
-        assertThat(contract.getEmployees()).containsOnly(employeeBack);
-        assertThat(employeeBack.getContract()).isEqualTo(contract);
-
-        contract.removeEmployee(employeeBack);
-        assertThat(contract.getEmployees()).doesNotContain(employeeBack);
-        assertThat(employeeBack.getContract()).isNull();
-
-        contract.employees(new HashSet<>(Set.of(employeeBack)));
-        assertThat(contract.getEmployees()).containsOnly(employeeBack);
-        assertThat(employeeBack.getContract()).isEqualTo(contract);
-
-        contract.setEmployees(new HashSet<>());
-        assertThat(contract.getEmployees()).doesNotContain(employeeBack);
-        assertThat(employeeBack.getContract()).isNull();
     }
 
     @Test

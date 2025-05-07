@@ -49,10 +49,10 @@ describe('ContractTermination Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Contract query and add missing value', () => {
       const contractTermination: IContractTermination = { id: 456 };
-      const contract: IContract = { id: 29419 };
+      const contract: IContract = { id: 4303 };
       contractTermination.contract = contract;
 
-      const contractCollection: IContract[] = [{ id: 20613 }];
+      const contractCollection: IContract[] = [{ id: 19996 }];
       jest.spyOn(contractService, 'query').mockReturnValue(of(new HttpResponse({ body: contractCollection })));
       const additionalContracts = [contract];
       const expectedCollection: IContract[] = [...additionalContracts, ...contractCollection];
@@ -71,7 +71,7 @@ describe('ContractTermination Management Update Component', () => {
 
     it('Should update editForm', () => {
       const contractTermination: IContractTermination = { id: 456 };
-      const contract: IContract = { id: 1353 };
+      const contract: IContract = { id: 17810 };
       contractTermination.contract = contract;
 
       activatedRoute.data = of({ contractTermination });

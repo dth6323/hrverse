@@ -22,9 +22,9 @@
       "endDate": "End Date",
       "status": "Status",
       "contractCode": "Contract Code",
+      "employee": "Employee",
       "wage": "Wage",
       "contractType": "Contract Type",
-      "employee": "Employee",
       "contractTermination": "Contract Termination"
     }
   }

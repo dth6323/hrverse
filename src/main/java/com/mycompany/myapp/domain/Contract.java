@@ -1,6 +1,7 @@
 package com.mycompany.myapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mycompany.myapp.domain.enumeration.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -33,14 +34,21 @@ public class Contract implements Serializable {
     private LocalDate endDate;
 
     @NotNull
-    @Size(max = 50)
-    @Column(name = "status", length = 50, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
 
     @NotNull
     @Size(max = 20)
     @Column(name = "contract_code", length = 20, nullable = false, unique = true)
     private String contractCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(
+        value = { "department", "contracts", "attendances", "payrolls", "resignations", "rewardPunishments" },
+        allowSetters = true
+    )
+    private Employee employee;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "contracts" }, allowSetters = true)
@@ -49,13 +57,6 @@ public class Contract implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "contracts" }, allowSetters = true)
     private ContractType contractType;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract")
-    @JsonIgnoreProperties(
-        value = { "department", "contract", "attendances", "payrolls", "resignations", "rewardPunishments" },
-        allowSetters = true
-    )
-    private Set<Employee> employees = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contract")
     @JsonIgnoreProperties(value = { "contract" }, allowSetters = true)
@@ -102,16 +103,16 @@ public class Contract implements Serializable {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return this.status;
     }
 
-    public Contract status(String status) {
+    public Contract status(Status status) {
         this.setStatus(status);
         return this;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -126,6 +127,19 @@ public class Contract implements Serializable {
 
     public void setContractCode(String contractCode) {
         this.contractCode = contractCode;
+    }
+
+    public Employee getEmployee() {
+        return this.employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Contract employee(Employee employee) {
+        this.setEmployee(employee);
+        return this;
     }
 
     public Wage getWage() {
@@ -151,37 +165,6 @@ public class Contract implements Serializable {
 
     public Contract contractType(ContractType contractType) {
         this.setContractType(contractType);
-        return this;
-    }
-
-    public Set<Employee> getEmployees() {
-        return this.employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        if (this.employees != null) {
-            this.employees.forEach(i -> i.setContract(null));
-        }
-        if (employees != null) {
-            employees.forEach(i -> i.setContract(this));
-        }
-        this.employees = employees;
-    }
-
-    public Contract employees(Set<Employee> employees) {
-        this.setEmployees(employees);
-        return this;
-    }
-
-    public Contract addEmployee(Employee employee) {
-        this.employees.add(employee);
-        employee.setContract(this);
-        return this;
-    }
-
-    public Contract removeEmployee(Employee employee) {
-        this.employees.remove(employee);
-        employee.setContract(null);
         return this;
     }
 

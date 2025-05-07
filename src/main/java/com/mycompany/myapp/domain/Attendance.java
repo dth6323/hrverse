@@ -41,7 +41,7 @@ public class Attendance implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "department", "contract", "attendances", "payrolls", "resignations", "rewardPunishments" },
+        value = { "department", "contracts", "attendances", "payrolls", "resignations", "rewardPunishments" },
         allowSetters = true
     )
     private Employee employee;

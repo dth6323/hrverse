@@ -23,7 +23,7 @@
             <column name="reason" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="status" type="varchar(20)">
+            <column name="status" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="notes" type="varchar(500)">

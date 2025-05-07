@@ -64,7 +64,6 @@ public class EmployeeAsserts {
     public static void assertEmployeeUpdatableRelationshipsEquals(Employee expected, Employee actual) {
         assertThat(expected)
             .as("Verify Employee relationships")
-            .satisfies(e -> assertThat(e.getDepartment()).as("check department").isEqualTo(actual.getDepartment()))
-            .satisfies(e -> assertThat(e.getContract()).as("check contract").isEqualTo(actual.getContract()));
+            .satisfies(e -> assertThat(e.getDepartment()).as("check department").isEqualTo(actual.getDepartment()));
     }
 }

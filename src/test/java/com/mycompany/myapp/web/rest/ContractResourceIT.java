@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.Contract;
+import com.mycompany.myapp.domain.enumeration.Status;
 import com.mycompany.myapp.repository.ContractRepository;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
@@ -40,8 +41,8 @@ class ContractResourceIT {
     private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final String DEFAULT_STATUS = "AAAAAAAAAA";
-    private static final String UPDATED_STATUS = "BBBBBBBBBB";
+    private static final Status DEFAULT_STATUS = Status.ACTIVE;
+    private static final Status UPDATED_STATUS = Status.DESTROY;
 
     private static final String DEFAULT_CONTRACT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_CONTRACT_CODE = "BBBBBBBBBB";
@@ -226,7 +227,7 @@ class ContractResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(contract.getId().intValue())))
             .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].contractCode").value(hasItem(DEFAULT_CONTRACT_CODE)));
     }
 
@@ -244,7 +245,7 @@ class ContractResourceIT {
             .andExpect(jsonPath("$.id").value(contract.getId().intValue()))
             .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.contractCode").value(DEFAULT_CONTRACT_CODE));
     }
 
