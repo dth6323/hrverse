@@ -1,0 +1,35 @@
+<div class="row mb-3">
+  <!-- Search Section -->
+  <div class="col-md-6">
+    <form class="input-group">
+      <span class="input-group-text">Key word</span>
+      <input type="text" name="search" class="form-control" placeholder="keyword" [(ngModel)]="keyword" />
+      <button class="btn btn-secondary" (click)="searchFileWithHighLight()">Search</button>
+    </form>
+  </div>
+
+  <div class="col-md-6">
+    <div class="mb-3 input-group">
+      <input class="form-control" type="file" (change)="onFileSelected($event)" />
+      <button class="btn btn-success" (click)="uploadFile()" [disabled]="isLoading">Upload</button>
+    </div>
+  </div>
+</div>
+
+<h2>List file</h2>
+@if (files && files.length > 0) {
+  <ul class="list-group">
+    @for (a of files; track a) {
+      <li class="list-group-item">
+        <div>
+          {{ a.fileName?.toString() }}
+        </div>
+        @if (a.highlight) {
+          <div class="border border-primary border-2 rounded">
+            <div [innerHTML]="a.highlight"></div>
+          </div>
+        }
+      </li>
+    }
+  </ul>
+}

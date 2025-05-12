@@ -1,48 +1,109 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (salaryDistribute(); as salaryDistributeRef) {
-      <div>
-        <h2 data-cy="salaryDistributeDetailsHeading">
-          <span jhiTranslate="hrVerseApp.salaryDistribute.detail.title">Salary Distribute</span>
-        </h2>
+<div class="d-flex">
+  <div class="">
+    <div class="col-12 px-3 py-2">
+      @if (salaryDistribute(); as salaryDistributeRef) {
+        <div>
+          <h2 data-cy="salaryDistributeDetailsHeading"><span>Salary Distribute</span></h2>
 
-        <hr />
+          <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+          <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+          <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="global.field.id">ID</span></dt>
-          <dd>
-            <span>{{ salaryDistributeRef.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="hrVerseApp.salaryDistribute.startDate">Start Date</span></dt>
-          <dd>
-            <span>{{ salaryDistributeRef.startDate | formatMediumDate }}</span>
-          </dd>
-          <dt><span jhiTranslate="hrVerseApp.salaryDistribute.endDate">End Date</span></dt>
-          <dd>
-            <span>{{ salaryDistributeRef.endDate | formatMediumDate }}</span>
-          </dd>
-          <dt><span jhiTranslate="hrVerseApp.salaryDistribute.workDay">Work Day</span></dt>
-          <dd>
-            <span>{{ salaryDistributeRef.workDay }}</span>
-          </dd>
-          <dt><span jhiTranslate="hrVerseApp.salaryDistribute.typeOfSalary">Type Of Salary</span></dt>
-          <dd>
-            <span>{{ salaryDistributeRef.typeOfSalary }}</span>
-          </dd>
-        </dl>
+          <dl class="row-md jh-entity-details">
+            <dt><span>ID</span></dt>
+            <dd>
+              <span>{{ salaryDistributeRef.id }}</span>
+            </dd>
+            <dt><span>Start Date</span></dt>
+            <dd>
+              <span>{{ salaryDistributeRef.startDate | formatMediumDate }}</span>
+            </dd>
+            <dt><span>End Date</span></dt>
+            <dd>
+              <span>{{ salaryDistributeRef.endDate | formatMediumDate }}</span>
+            </dd>
+            <dt><span>Work Day</span></dt>
+            <dd>
+              <span>{{ salaryDistributeRef.workDay }}</span>
+            </dd>
+            <dt><span>Type Of Salary</span></dt>
+            <dd>
+              <span>{{ salaryDistributeRef.typeOfSalary }}</span>
+            </dd>
+          </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-        </button>
+          <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+          </button>
 
-        <button type="button" [routerLink]="['/salary-distribute', salaryDistributeRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-        </button>
+          <button type="button" [routerLink]="['/salary-distribute', salaryDistributeRef.id, 'edit']" class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="mt-4">
+    <button class="btn btn-success" (click)="caculate()">Caculate</button>
+    <button class="btn btn-primary" (click)="exportReport()" [disabled]="!id">Xuất Báo Cáo</button>
+    <div>
+      <div class="pt-5">
+        @if (employeeDetail && employeeDetail.length > 0) {
+          <div class="" id="entities">
+            <table class="table table-striped" aria-describedby="page-heading">
+              <thead>
+                <tr>
+                  <th scope="col" class="px-3 py-2">
+                    <div class="d-flex">
+                      <span>Name</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="px-3 py-2">
+                    <div class="d-flex">
+                      <span>ToTal Salary</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="px-3 py-2">
+                    <div class="d-flex">
+                      <span>Total Work Day</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="px-3 py-2">
+                    <div class="d-flex">
+                      <span>Wage Allowance</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="px-3 py-2">
+                    <div class="d-flex">
+                      <span>Wage BaseSalary</span>
+                    </div>
+                  </th>
+                  <th scope="col" class="px-3 py-2">
+                    <div class="d-flex">
+                      <span>Wage Coefficients</span>
+                    </div>
+                  </th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of employeeDetail; track employeeDetail) {
+                  <tr data-cy="entityTable" class="">
+                    <td class="px-3 py-2">{{ item.employeeName }}</td>
+                    <td class="px-3 py-2">{{ item.totalSalary }}</td>
+                    <td class="px-3 py-2">{{ item.totalWorkDays }}</td>
+                    <td class="px-3 py-2">{{ item.wageAllowance }}</td>
+                    <td class="px-3 py-2">{{ item.wageBaseSalary }}</td>
+                    <td class="px-3 py-2">{{ item.wageCoefficients }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
       </div>
-    }
+    </div>
   </div>
 </div>

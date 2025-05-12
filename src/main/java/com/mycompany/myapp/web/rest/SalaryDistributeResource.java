@@ -1,21 +1,36 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.Payroll;
 import com.mycompany.myapp.domain.SalaryDistribute;
 import com.mycompany.myapp.repository.SalaryDistributeRepository;
+import com.mycompany.myapp.service.FileService;
+import com.mycompany.myapp.service.SalaryDistributeService;
+import com.mycompany.myapp.service.dto.request.CaculateSalaryRequest;
+import com.mycompany.myapp.service.dto.request.SalaryDistributeDetailrequest;
+import com.mycompany.myapp.service.dto.response.PdfExportResponse;
+import com.mycompany.myapp.service.dto.response.SalaryDistributeDetailResponse;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -40,18 +55,19 @@ public class SalaryDistributeResource {
     private String applicationName;
 
     private final SalaryDistributeRepository salaryDistributeRepository;
+    private final SalaryDistributeService salaryDistributeService;
+    private final FileService fileService;
 
-    public SalaryDistributeResource(SalaryDistributeRepository salaryDistributeRepository) {
+    public SalaryDistributeResource(
+        SalaryDistributeRepository salaryDistributeRepository,
+        SalaryDistributeService salaryDistributeService,
+        FileService fileService
+    ) {
         this.salaryDistributeRepository = salaryDistributeRepository;
+        this.salaryDistributeService = salaryDistributeService;
+        this.fileService = fileService;
     }
 
-    /**
-     * {@code POST  /salary-distributes} : Create a new salaryDistribute.
-     *
-     * @param salaryDistribute the salaryDistribute to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new salaryDistribute, or with status {@code 400 (Bad Request)} if the salaryDistribute has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PostMapping("")
     public ResponseEntity<SalaryDistribute> createSalaryDistribute(@Valid @RequestBody SalaryDistribute salaryDistribute)
         throws URISyntaxException {
@@ -65,16 +81,6 @@ public class SalaryDistributeResource {
             .body(salaryDistribute);
     }
 
-    /**
-     * {@code PUT  /salary-distributes/:id} : Updates an existing salaryDistribute.
-     *
-     * @param id the id of the salaryDistribute to save.
-     * @param salaryDistribute the salaryDistribute to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated salaryDistribute,
-     * or with status {@code 400 (Bad Request)} if the salaryDistribute is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the salaryDistribute couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PutMapping("/{id}")
     public ResponseEntity<SalaryDistribute> updateSalaryDistribute(
         @PathVariable(value = "id", required = false) final Long id,
@@ -98,17 +104,11 @@ public class SalaryDistributeResource {
             .body(salaryDistribute);
     }
 
-    /**
-     * {@code PATCH  /salary-distributes/:id} : Partial updates given fields of an existing salaryDistribute, field will ignore if it is null
-     *
-     * @param id the id of the salaryDistribute to save.
-     * @param salaryDistribute the salaryDistribute to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated salaryDistribute,
-     * or with status {@code 400 (Bad Request)} if the salaryDistribute is not valid,
-     * or with status {@code 404 (Not Found)} if the salaryDistribute is not found,
-     * or with status {@code 500 (Internal Server Error)} if the salaryDistribute couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @GetMapping("/test")
+    public String test() {
+        return "Test endpoint working";
+    }
+
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SalaryDistribute> partialUpdateSalaryDistribute(
         @PathVariable(value = "id", required = false) final Long id,
@@ -152,12 +152,6 @@ public class SalaryDistributeResource {
         );
     }
 
-    /**
-     * {@code GET  /salary-distributes} : get all the salaryDistributes.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of salaryDistributes in body.
-     */
     @GetMapping("")
     public ResponseEntity<List<SalaryDistribute>> getAllSalaryDistributes(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
@@ -168,12 +162,6 @@ public class SalaryDistributeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /salary-distributes/:id} : get the "id" salaryDistribute.
-     *
-     * @param id the id of the salaryDistribute to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the salaryDistribute, or with status {@code 404 (Not Found)}.
-     */
     @GetMapping("/{id}")
     public ResponseEntity<SalaryDistribute> getSalaryDistribute(@PathVariable("id") Long id) {
         LOG.debug("REST request to get SalaryDistribute : {}", id);
@@ -181,12 +169,6 @@ public class SalaryDistributeResource {
         return ResponseUtil.wrapOrNotFound(salaryDistribute);
     }
 
-    /**
-     * {@code DELETE  /salary-distributes/:id} : delete the "id" salaryDistribute.
-     *
-     * @param id the id of the salaryDistribute to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSalaryDistribute(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SalaryDistribute : {}", id);
@@ -194,5 +176,49 @@ public class SalaryDistributeResource {
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PostMapping("/caculate")
+    public ResponseEntity<List<Payroll>> caculateSalaryDistribute(@RequestBody CaculateSalaryRequest request) {
+        return ResponseEntity.ok(salaryDistributeService.salaryCaculate(request));
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<Resource> exportDetails(@RequestParam("id") String id) throws Exception {
+        if (id == null || id.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        byte[] pdfData = salaryDistributeService.exportSalaryDistribute(id);
+        ByteArrayResource resource = new ByteArrayResource(pdfData);
+        String fileName = String.format("salary-report-%s-%s.pdf", id, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
+        HttpHeaders headers = new HttpHeaders();
+        String contentDisposition = "attachment; filename=" + fileName;
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
+        headers.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
+        headers.add(HttpHeaders.PRAGMA, "no-cache");
+        headers.add(HttpHeaders.EXPIRES, "0");
+
+        // Upload to MinIO
+        InputStream ips = new ByteArrayInputStream(pdfData);
+        fileService.uploadToMinio(ips, Long.valueOf(pdfData.length), "application/pdf", fileName);
+
+        InputStream contentStream = new ByteArrayInputStream(pdfData); // Tạo InputStream mới cho trích xuất
+        String content = fileService.extractContentFromFile(contentStream, fileName);
+        fileService.uploadToElastic(content, fileName);
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(resource.contentLength())
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(resource);
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<List<SalaryDistributeDetailResponse>> findDetail(@RequestParam("id") String id) {
+        if (id == null || id.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(salaryDistributeService.showSalaryDistribute(id));
     }
 }

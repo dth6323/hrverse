@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -9,6 +8,9 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ISalaryDistribute, NewSalaryDistribute } from '../salary-distribute.model';
+import { IEmployee } from '../../employee/employee.model';
+import { SalaryDistribute } from '../employee-detail.model';
+import { IPayroll } from '../../payroll/payroll.model';
 
 export type PartialUpdateSalaryDistribute = Partial<ISalaryDistribute> & Pick<ISalaryDistribute, 'id'>;
 
@@ -26,13 +28,32 @@ export type PartialUpdateRestSalaryDistribute = RestOf<PartialUpdateSalaryDistri
 export type EntityResponseType = HttpResponse<ISalaryDistribute>;
 export type EntityArrayResponseType = HttpResponse<ISalaryDistribute[]>;
 
+export type EmployeeResponseType = HttpResponse<IEmployee>;
+export type EmployeeArrayResponseType = HttpResponse<IEmployee[]>;
 @Injectable({ providedIn: 'root' })
 export class SalaryDistributeService {
   protected http = inject(HttpClient);
   protected applicationConfigService = inject(ApplicationConfigService);
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/salary-distributes');
-
+  caculate(startDate: dayjs.Dayjs, endDate: dayjs.Dayjs, id: number): Observable<any> {
+    const payload = {
+      startDate: startDate.format('YYYY-MM-DD'),
+      endDate: endDate.format('YYYY-MM-DD'),
+      id,
+    };
+    return this.http.post<any>(`${this.resourceUrl}/caculate`, payload, { observe: 'response' }).pipe(map(res => res));
+  }
+  exportDetails(id: string): Observable<HttpResponse<Blob>> {
+    return this.http.get(`${this.resourceUrl}/export`, {
+      params: { id },
+      observe: 'response',
+      responseType: 'blob',
+    });
+  }
+  showemployee(id?: string): Observable<SalaryDistribute[]> {
+    return this.http.get<SalaryDistribute[]>(`${this.resourceUrl}/details?id=${id}`);
+  }
   create(salaryDistribute: NewSalaryDistribute): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(salaryDistribute);
     return this.http

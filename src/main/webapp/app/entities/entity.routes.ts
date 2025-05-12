@@ -12,6 +12,11 @@ const routes: Routes = [
     loadChildren: () => import('./attendance/attendance.routes'),
   },
   {
+    path: 'filemana',
+    data: { pageTitle: 'Filemana' },
+    loadChildren: () => import('./filemanagement/filemana.routes'),
+  },
+  {
     path: 'contract',
     data: { pageTitle: 'hrVerseApp.contract.home.title' },
     loadChildren: () => import('./contract/contract.routes'),

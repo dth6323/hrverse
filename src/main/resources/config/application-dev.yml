@@ -91,6 +91,12 @@ jhipster:
       host: localhost
       port: 5000
       ring-buffer-size: 512
+
+minio:
+  url: http://localhost:9002
+  accessKey: oDUAHkCdEnbmWiJnMmy3
+  secretKey: vALTJi1kKti9nQ0UOpUzgYwv14gH7zf78WKgvxoe
+  bucket: hrverse
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

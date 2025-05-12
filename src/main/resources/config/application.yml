@@ -89,6 +89,11 @@ management:
     tags:
       application: ${spring.application.name}
 
+minio:
+  url: http://localhost:9002
+  accessKey: oDUAHkCdEnbmWiJnMmy3
+  secretKey: vALTJi1kKti9nQ0UOpUzgYwv14gH7zf78WKgvxoe
+  bucket: hrverse
 spring:
   application:
     name: HRVerse
