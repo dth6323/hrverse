@@ -7,6 +7,8 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { IDepartment } from 'app/entities/department/department.model';
 import { DepartmentService } from 'app/entities/department/service/department.service';
 import { Gender } from 'app/entities/enumerations/gender.model';
@@ -25,15 +27,19 @@ export class EmployeeUpdateComponent implements OnInit {
   employee: IEmployee | null = null;
   genderValues = Object.keys(Gender);
 
+  usersSharedCollection: IUser[] = [];
   departmentsSharedCollection: IDepartment[] = [];
 
   protected employeeService = inject(EmployeeService);
   protected employeeFormService = inject(EmployeeFormService);
+  protected userService = inject(UserService);
   protected departmentService = inject(DepartmentService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: EmployeeFormGroup = this.employeeFormService.createEmployeeFormGroup();
+
+  compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
 
   compareDepartment = (o1: IDepartment | null, o2: IDepartment | null): boolean => this.departmentService.compareDepartment(o1, o2);
 
@@ -43,7 +49,6 @@ export class EmployeeUpdateComponent implements OnInit {
       if (employee) {
         this.updateForm(employee);
       }
-
       this.loadRelationshipsOptions();
     });
   }
@@ -85,6 +90,7 @@ export class EmployeeUpdateComponent implements OnInit {
     this.employee = employee;
     this.employeeFormService.resetForm(this.editForm, employee);
 
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, employee.user);
     this.departmentsSharedCollection = this.departmentService.addDepartmentToCollectionIfMissing<IDepartment>(
       this.departmentsSharedCollection,
       employee.department,
@@ -92,6 +98,12 @@ export class EmployeeUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.employee?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+
     this.departmentService
       .query()
       .pipe(map((res: HttpResponse<IDepartment[]>) => res.body ?? []))

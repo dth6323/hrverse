@@ -152,6 +152,12 @@ public class SalaryDistributeResource {
         );
     }
 
+    /**
+     * {@code GET  /salary-distributes} : get all the salaryDistributes.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of salaryDistributes in body.
+     */
     @GetMapping("")
     public ResponseEntity<List<SalaryDistribute>> getAllSalaryDistributes(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
@@ -162,6 +168,12 @@ public class SalaryDistributeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    /**
+     * {@code GET  /salary-distributes/:id} : get the "id" salaryDistribute.
+     *
+     * @param id the id of the salaryDistribute to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the salaryDistribute, or with status {@code 404 (Not Found)}.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<SalaryDistribute> getSalaryDistribute(@PathVariable("id") Long id) {
         LOG.debug("REST request to get SalaryDistribute : {}", id);
@@ -169,6 +181,12 @@ public class SalaryDistributeResource {
         return ResponseUtil.wrapOrNotFound(salaryDistribute);
     }
 
+    /**
+     * {@code DELETE  /salary-distributes/:id} : delete the "id" salaryDistribute.
+     *
+     * @param id the id of the salaryDistribute to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSalaryDistribute(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SalaryDistribute : {}", id);
@@ -200,7 +218,6 @@ public class SalaryDistributeResource {
         headers.add(HttpHeaders.PRAGMA, "no-cache");
         headers.add(HttpHeaders.EXPIRES, "0");
 
-        // Upload to MinIO
         InputStream ips = new ByteArrayInputStream(pdfData);
         fileService.uploadToMinio(ips, Long.valueOf(pdfData.length), "application/pdf", fileName);
 

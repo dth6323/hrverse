@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 
 import dayjs from 'dayjs/esm';
 
@@ -9,7 +9,7 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IEmployee, NewEmployee } from '../employee.model';
-
+import { AccountService } from 'app/core/auth/account.service';
 export type PartialUpdateEmployee = Partial<IEmployee> & Pick<IEmployee, 'id'>;
 
 type RestOf<T extends IEmployee | NewEmployee> = Omit<T, 'dateOfBirth'> & {
@@ -29,7 +29,7 @@ export type EntityArrayResponseType = HttpResponse<IEmployee[]>;
 export class EmployeeService {
   protected http = inject(HttpClient);
   protected applicationConfigService = inject(ApplicationConfigService);
-
+  protected accountService = inject(AccountService);
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/employees');
 
   create(employee: NewEmployee): Observable<EntityResponseType> {
@@ -38,7 +38,17 @@ export class EmployeeService {
       .post<RestEmployee>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
-
+  getEmployeeByCurrentUser(): Observable<IEmployee> {
+    return this.accountService.identity().pipe(
+      map(account => account?.email), // Lấy email của người dùng
+      switchMap(email => {
+        if (!email) {
+          throw new Error('Email không tồn tại');
+        }
+        return this.http.get<IEmployee>(`${this.resourceUrl}/findEmployee/${email}`);
+      }),
+    );
+  }
   update(employee: IEmployee): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(employee);
     return this.http

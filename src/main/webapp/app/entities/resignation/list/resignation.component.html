@@ -108,6 +108,26 @@
               </td>
               <td class="text-end">
                 <div class="btn-group">
+                  @if (resignation.status) {
+                    <button
+                      type="button"
+                      (click)="setActive(resignation)"
+                      class="btn btn-success btn-sm"
+                      [disabled]="isActive(resignation.status)"
+                    >
+                      <fa-icon icon="check"></fa-icon>
+                      <span class="d-none d-md-inline">Active</span>
+                    </button>
+                    <button
+                      type="button"
+                      (click)="setDestroy(resignation)"
+                      class="btn btn-danger btn-sm"
+                      [disabled]="isDestroy(resignation.status)"
+                    >
+                      <fa-icon icon="check"></fa-icon>
+                      <span class="d-none d-md-inline">Destroy</span>
+                    </button>
+                  }
                   <a [routerLink]="['/resignation', resignation.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>

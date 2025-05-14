@@ -41,6 +41,10 @@
           <dd>
             <span>{{ employeeRef.dateOfBirth | formatMediumDate }}</span>
           </dd>
+          <dt><span jhiTranslate="hrVerseApp.employee.user">User</span></dt>
+          <dd>
+            <span>{{ employeeRef.user?.id }}</span>
+          </dd>
           <dt><span jhiTranslate="hrVerseApp.employee.department">Department</span></dt>
           <dd>
             @if (employee()!.department) {

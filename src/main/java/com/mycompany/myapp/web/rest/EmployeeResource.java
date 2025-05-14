@@ -45,13 +45,12 @@ public class EmployeeResource {
         this.employeeRepository = employeeRepository;
     }
 
-    /**
-     * {@code POST  /employees} : Create a new employee.
-     *
-     * @param employee the employee to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new employee, or with status {@code 400 (Bad Request)} if the employee has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @GetMapping("/findEmployee/{email}")
+    public ResponseEntity<Employee> getEmployeeByEmail(@PathVariable String email) {
+        Optional<Employee> employeeDTO = employeeRepository.findByEmail(email);
+        return ResponseUtil.wrapOrNotFound(employeeDTO);
+    }
+
     @PostMapping("")
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) throws URISyntaxException {
         LOG.debug("REST request to save Employee : {}", employee);

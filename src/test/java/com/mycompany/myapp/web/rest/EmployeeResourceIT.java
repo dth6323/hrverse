@@ -12,6 +12,7 @@ import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.Employee;
 import com.mycompany.myapp.domain.enumeration.Gender;
 import com.mycompany.myapp.repository.EmployeeRepository;
+import com.mycompany.myapp.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -64,6 +65,9 @@ class EmployeeResourceIT {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private EntityManager em;

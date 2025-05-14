@@ -45,7 +45,7 @@ public class Contract implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "department", "contracts", "attendances", "payrolls", "resignations", "rewardPunishments" },
+        value = { "user", "department", "contracts", "attendances", "payrolls", "resignations", "rewardPunishments" },
         allowSetters = true
     )
     private Employee employee;

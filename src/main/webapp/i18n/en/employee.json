@@ -24,6 +24,7 @@
       "address": "Address",
       "gender": "Gender",
       "dateOfBirth": "Date Of Birth",
+      "user": "User",
       "department": "Department",
       "contract": "Contract",
       "attendance": "Attendance",

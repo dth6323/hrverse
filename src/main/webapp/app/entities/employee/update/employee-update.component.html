@@ -133,6 +133,16 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_user" jhiTranslate="hrVerseApp.employee.user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_department" jhiTranslate="hrVerseApp.employee.department">Department</label>
           <select
             class="form-control"

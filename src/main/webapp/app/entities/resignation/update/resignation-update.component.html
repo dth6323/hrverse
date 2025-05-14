@@ -95,7 +95,6 @@
         <div class="mb-3">
           <label class="form-label" for="field_status" jhiTranslate="hrVerseApp.resignation.status">Status</label>
           <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
-            <option [ngValue]="null">{{ 'hrVerseApp.Status.null' | translate }}</option>
             @for (status of statusValues; track $index) {
               <option [value]="status">{{ 'hrVerseApp.Status.' + status | translate }}</option>
             }
@@ -134,7 +133,6 @@
             formControlName="employee"
             [compareWith]="compareEmployee"
           >
-            <option [ngValue]="null"></option>
             @for (employeeOption of employeesSharedCollection; track $index) {
               <option [ngValue]="employeeOption">{{ employeeOption.id }}</option>
             }

@@ -13,7 +13,7 @@ import { Status } from 'app/entities/enumerations/status.model';
 import { ResignationService } from '../service/resignation.service';
 import { IResignation } from '../resignation.model';
 import { ResignationFormGroup, ResignationFormService } from './resignation-form.service';
-
+import HasAnyAuthorityDirective from '../../../shared/auth/has-any-authority.directive';
 @Component({
   standalone: true,
   selector: 'jhi-resignation-update',
@@ -23,7 +23,7 @@ import { ResignationFormGroup, ResignationFormService } from './resignation-form
 export class ResignationUpdateComponent implements OnInit {
   isSaving = false;
   resignation: IResignation | null = null;
-  statusValues = Object.keys(Status);
+  statusValues = [Status.PENDING];
 
   employeesSharedCollection: IEmployee[] = [];
 
@@ -43,11 +43,28 @@ export class ResignationUpdateComponent implements OnInit {
       if (resignation) {
         this.updateForm(resignation);
       }
-
-      this.loadRelationshipsOptions();
+      this.loadCurrentEmployee();
     });
   }
-
+  loadCurrentEmployee(): void {
+    this.employeeService.getEmployeeByCurrentUser().subscribe({
+      next: (employee: IEmployee) => {
+        this.employeesSharedCollection[0] = employee;
+        this.loadRelationshipsOptions();
+        if (this.employeesSharedCollection.length > 0) {
+          //eslint-disable-next-line
+          console.log('ádasd:');
+          this.editForm.patchValue({
+            employee: this.employeesSharedCollection[0],
+            status: Status.ACTIVE,
+          });
+        }
+      },
+      error: () => {
+        this.loadRelationshipsOptions(); // Vẫn tải resignations nếu lỗi
+      },
+    });
+  }
   previousState(): void {
     window.history.back();
   }
@@ -92,14 +109,6 @@ export class ResignationUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
-    this.employeeService
-      .query()
-      .pipe(map((res: HttpResponse<IEmployee[]>) => res.body ?? []))
-      .pipe(
-        map((employees: IEmployee[]) =>
-          this.employeeService.addEmployeeToCollectionIfMissing<IEmployee>(employees, this.resignation?.employee),
-        ),
-      )
-      .subscribe((employees: IEmployee[]) => (this.employeesSharedCollection = employees));
+    this.employeeService.query().pipe(map((res: HttpResponse<IEmployee[]>) => res.body ?? []));
   }
 }

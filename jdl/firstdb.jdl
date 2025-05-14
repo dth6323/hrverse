@@ -80,6 +80,9 @@ entity RewardPunishment {
   ApplyDate LocalDate required, Notes String maxlength(500)
 }
 
+relationship OneToOne {
+  Employee to User with builtInEntity
+}
 relationship ManyToOne {
   Employee to Department,
   Contract to Employee,

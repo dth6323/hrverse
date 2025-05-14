@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit, inject } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,8 @@ import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigati
 import { IResignation } from '../resignation.model';
 import { EntityArrayResponseType, ResignationService } from '../service/resignation.service';
 import { ResignationDeleteDialogComponent } from '../delete/resignation-delete-dialog.component';
-
+import { AlertService } from '../../../core/util/alert.service';
+import { Status } from '../../enumerations/status.model';
 @Component({
   standalone: true,
   selector: 'jhi-resignation',
@@ -38,7 +39,7 @@ export class ResignationComponent implements OnInit {
   isLoading = false;
 
   sortState = sortStateSignal({});
-
+  submitRes?: IResignation;
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
@@ -49,9 +50,8 @@ export class ResignationComponent implements OnInit {
   protected sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
-
+  protected alertService = inject(AlertService);
   trackId = (item: IResignation): number => this.resignationService.getResignationIdentifier(item);
-
   ngOnInit(): void {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
@@ -60,7 +60,42 @@ export class ResignationComponent implements OnInit {
       )
       .subscribe();
   }
-
+  isActive(status: keyof typeof Status): boolean {
+    return status === Status.ACTIVE;
+  }
+  isDestroy(status: keyof typeof Status): boolean {
+    return status === Status.DESTROY;
+  }
+  setDestroy(resignation: IResignation): void {
+    const updatedResignation: IResignation = { ...resignation, status: 'DESTROY' };
+    this.resignationService.partialUpdate(updatedResignation).subscribe({
+      next: (res: HttpResponse<IResignation>) => {
+        this.load();
+        this.alertService.addAlert({
+          type: 'success',
+          message: 'Update sucess',
+        });
+      },
+      error(err) {
+        alert('Failed to update resignation status');
+      },
+    });
+  }
+  setActive(resignation: IResignation): void {
+    const updatedResignation: IResignation = { ...resignation, status: 'ACTIVE' };
+    this.resignationService.partialUpdate(updatedResignation).subscribe({
+      next: (res: HttpResponse<IResignation>) => {
+        this.load();
+        this.alertService.addAlert({
+          type: 'success',
+          message: 'Update sucess',
+        });
+      },
+      error(err) {
+        alert('Failed to update resignation status');
+      },
+    });
+  }
   delete(resignation: IResignation): void {
     const modalRef = this.modalService.open(ResignationDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.resignation = resignation;

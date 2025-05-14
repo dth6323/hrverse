@@ -26,6 +26,7 @@ describe('Employee Form Service', () => {
             address: expect.any(Object),
             gender: expect.any(Object),
             dateOfBirth: expect.any(Object),
+            user: expect.any(Object),
             department: expect.any(Object),
           }),
         );
@@ -43,6 +44,7 @@ describe('Employee Form Service', () => {
             address: expect.any(Object),
             gender: expect.any(Object),
             dateOfBirth: expect.any(Object),
+            user: expect.any(Object),
             department: expect.any(Object),
           }),
         );

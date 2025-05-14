@@ -44,6 +44,14 @@
   "pagination": "pagination",
   "relationships": [
     {
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "employee",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
       "otherEntityName": "department",
       "otherEntityRelationshipName": "employee",
       "relationshipName": "department",
