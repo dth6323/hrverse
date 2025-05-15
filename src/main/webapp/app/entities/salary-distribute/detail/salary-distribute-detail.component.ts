@@ -61,12 +61,6 @@ export class SalaryDistributeDetailComponent implements OnInit {
             }
           }
 
-          // Debug: In header và tên file
-          // eslint-disable-next-line
-          console.log('Content-Disposition:', contentDisposition);
-          // eslint-disable-next-line
-          console.log('Tên file được trích xuất:', fileName);
-
           const url = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;

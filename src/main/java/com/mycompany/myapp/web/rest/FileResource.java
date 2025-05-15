@@ -42,7 +42,7 @@ public class FileResource {
     public ResponseEntity<?> getFile(@RequestParam("filename") String fileName) {
         try {
             byte[] fileBytes = fileService.getFile(fileName);
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(fileBytes);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(fileBytes);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }

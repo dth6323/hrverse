@@ -1,0 +1,11 @@
+<div class="modal-header bg-info">
+  <h4 class="modal-title">AI Analysis for {{ fileName }}</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <pre>{{ analysisContent }}</pre>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success" (click)="openCreate()">Save</button>
+  <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
+</div>

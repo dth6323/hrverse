@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface SalaryDistributeRepository extends JpaRepository<SalaryDistribute, Long> {
     @Query(
         value = """
-
                     SELECT
             e.name AS employee_name,
             w.coefficients AS wage_coefficients,

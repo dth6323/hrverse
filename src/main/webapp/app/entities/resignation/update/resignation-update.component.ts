@@ -52,8 +52,6 @@ export class ResignationUpdateComponent implements OnInit {
         this.employeesSharedCollection[0] = employee;
         this.loadRelationshipsOptions();
         if (this.employeesSharedCollection.length > 0) {
-          //eslint-disable-next-line
-          console.log('ádasd:');
           this.editForm.patchValue({
             employee: this.employeesSharedCollection[0],
             status: Status.ACTIVE,

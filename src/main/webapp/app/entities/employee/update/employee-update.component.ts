@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, Input } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, window } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
@@ -23,6 +23,7 @@ import { EmployeeFormGroup, EmployeeFormService } from './employee-form.service'
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class EmployeeUpdateComponent implements OnInit {
+  @Input() employeeTmp: any;
   isSaving = false;
   employee: IEmployee | null = null;
   genderValues = Object.keys(Gender);
@@ -49,12 +50,23 @@ export class EmployeeUpdateComponent implements OnInit {
       if (employee) {
         this.updateForm(employee);
       }
+      if (this.employeeTmp) {
+        alert(this.employeeTmp);
+        this.editForm.patchValue({
+          name: this.employeeTmp.name,
+          phone: this.employeeTmp.phone,
+          email: this.employeeTmp.email,
+          address: this.employeeTmp.address,
+          gender: this.employeeTmp.gender,
+          dateOfBirth: this.employeeTmp.dateOfBirth,
+        });
+      }
       this.loadRelationshipsOptions();
     });
   }
 
   previousState(): void {
-    window.history.back();
+    globalThis.window.history.back();
   }
 
   save(): void {

@@ -79,6 +79,8 @@
     "@fortawesome/angular-fontawesome": "0.15.0",
     "@fortawesome/fontawesome-svg-core": "6.6.0",
     "@fortawesome/free-solid-svg-icons": "6.6.0",
+    "@google/genai": "^0.14.0",
+    "@google/generative-ai": "^0.24.1",
     "@ng-bootstrap/ng-bootstrap": "17.0.1",
     "@ngx-translate/core": "15.0.0",
     "@ngx-translate/http-loader": "8.0.0",
@@ -87,6 +89,7 @@
     "colorette": "^2.0.19",
     "dayjs": "1.11.13",
     "ngx-infinite-scroll": "18.0.0",
+    "pdfjs-dist": "^4.6.82",
     "rxjs": "7.8.1",
     "tslib": "2.7.0",
     "zone.js": "0.14.10"
