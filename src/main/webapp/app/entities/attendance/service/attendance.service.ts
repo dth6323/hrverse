@@ -40,7 +40,14 @@ export class AttendanceService {
       .post<RestAttendance>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
-
+  uploadFile(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file); // Đính kèm file vào formData
+    return this.http.post(`${this.resourceUrl}/import`, formData, {
+      observe: 'response',
+      responseType: 'text',
+    });
+  }
   update(attendance: IAttendance): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(attendance);
     return this.http

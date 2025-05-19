@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Employee;
 import com.mycompany.myapp.repository.EmployeeRepository;
+import com.mycompany.myapp.service.EmployeeService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -40,9 +41,16 @@ public class EmployeeResource {
     private String applicationName;
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeResource(EmployeeRepository employeeRepository) {
+    public EmployeeResource(EmployeeRepository employeeRepository, EmployeeService employeeService) {
         this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping("/getInformation/{email}")
+    public ResponseEntity<?> getInformation(@PathVariable("email") String email) {
+        return ResponseEntity.ok(employeeService.showInfor(email));
     }
 
     @GetMapping("/findEmployee/{email}")
@@ -63,16 +71,6 @@ public class EmployeeResource {
             .body(employee);
     }
 
-    /**
-     * {@code PUT  /employees/:id} : Updates an existing employee.
-     *
-     * @param id the id of the employee to save.
-     * @param employee the employee to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated employee,
-     * or with status {@code 400 (Bad Request)} if the employee is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the employee couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(
         @PathVariable(value = "id", required = false) final Long id,
@@ -96,17 +94,6 @@ public class EmployeeResource {
             .body(employee);
     }
 
-    /**
-     * {@code PATCH  /employees/:id} : Partial updates given fields of an existing employee, field will ignore if it is null
-     *
-     * @param id the id of the employee to save.
-     * @param employee the employee to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated employee,
-     * or with status {@code 400 (Bad Request)} if the employee is not valid,
-     * or with status {@code 404 (Not Found)} if the employee is not found,
-     * or with status {@code 500 (Internal Server Error)} if the employee couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Employee> partialUpdateEmployee(
         @PathVariable(value = "id", required = false) final Long id,

@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Attendance;
 import com.mycompany.myapp.repository.AttendanceRepository;
+import com.mycompany.myapp.service.AttendanceImportService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -39,19 +41,26 @@ public class AttendanceResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final AttendanceImportService attendanceService;
     private final AttendanceRepository attendanceRepository;
 
-    public AttendanceResource(AttendanceRepository attendanceRepository) {
+    public AttendanceResource(AttendanceRepository attendanceRepository, AttendanceImportService attendanceService) {
         this.attendanceRepository = attendanceRepository;
+        this.attendanceService = attendanceService;
     }
 
-    /**
-     * {@code POST  /attendances} : Create a new attendance.
-     *
-     * @param attendance the attendance to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new attendance, or with status {@code 400 (Bad Request)} if the attendance has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PostMapping("/import")
+    public ResponseEntity<String> importAttendance(@RequestParam("file") MultipartFile file) {
+        try {
+            int importedCount = attendanceService.importFromExcel(file);
+            return ResponseEntity.ok("Successfully imported " + importedCount + " attendance records");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid file: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error importing attendance data: " + e.getMessage());
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Attendance> createAttendance(@Valid @RequestBody Attendance attendance) throws URISyntaxException {
         LOG.debug("REST request to save Attendance : {}", attendance);

@@ -51,7 +51,6 @@ export class EmployeeUpdateComponent implements OnInit {
         this.updateForm(employee);
       }
       if (this.employeeTmp) {
-        alert(this.employeeTmp);
         this.editForm.patchValue({
           name: this.employeeTmp.name,
           phone: this.employeeTmp.phone,

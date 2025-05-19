@@ -10,6 +10,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { IEmployee, NewEmployee } from '../employee.model';
 import { AccountService } from 'app/core/auth/account.service';
+import { Infor } from '../infor.model';
 export type PartialUpdateEmployee = Partial<IEmployee> & Pick<IEmployee, 'id'>;
 
 type RestOf<T extends IEmployee | NewEmployee> = Omit<T, 'dateOfBirth'> & {
@@ -46,6 +47,17 @@ export class EmployeeService {
           throw new Error('Email không tồn tại');
         }
         return this.http.get<IEmployee>(`${this.resourceUrl}/findEmployee/${email}`);
+      }),
+    );
+  }
+  getInformation(): Observable<Infor[]> {
+    return this.accountService.identity().pipe(
+      map(account => account?.email),
+      switchMap(email => {
+        if (!email) {
+          throw new Error('Email không tồn tại');
+        }
+        return this.http.get<Infor[]>(`${this.resourceUrl}/getInformation/${email}`);
       }),
     );
   }

@@ -37,6 +37,7 @@ export class AttendanceComponent implements OnInit {
   attendances?: IAttendance[];
   isLoading = false;
 
+  selectedFile: File | null = null;
   sortState = sortStateSignal({});
 
   itemsPerPage = ITEMS_PER_PAGE;
@@ -60,7 +61,32 @@ export class AttendanceComponent implements OnInit {
       )
       .subscribe();
   }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
+  uploadFile(): void {
+    if (!this.selectedFile) {
+      alert('Please select a file to upload.');
+      return;
+    }
 
+    this.isLoading = true;
+
+    this.attendanceService.uploadFile(this.selectedFile).subscribe({
+      next: () => {
+        this.load();
+      },
+      complete: () => {
+        this.isLoading = false;
+        this.selectedFile = null;
+        const inputElement = document.querySelector('input[type="file"]') as HTMLInputElement;
+        inputElement.value = '';
+      },
+    });
+  }
   delete(attendance: IAttendance): void {
     const modalRef = this.modalService.open(AttendanceDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.attendance = attendance;

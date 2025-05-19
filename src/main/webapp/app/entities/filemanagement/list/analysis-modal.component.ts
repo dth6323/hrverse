@@ -36,8 +36,6 @@ export class AnalysisModalComponent {
           : null,
       };
 
-      //eslint-disable-next-line
-      console.log(employeeData);
       const modalRef = this.modalService.open(EmployeeUpdateComponent);
       modalRef.componentInstance.employeeTmp = employeeData;
 

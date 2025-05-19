@@ -1,8 +1,9 @@
 <div>
+  <input class="form-control" type="file" (change)="onFileSelected($event)" />
   <h2 id="page-heading" data-cy="AttendanceHeading">
     <span jhiTranslate="hrVerseApp.attendance.home.title">Attendances</span>
-
     <div class="d-flex justify-content-end">
+      <button class="btn btn-success me-2" (click)="uploadFile()" [disabled]="isLoading">Upload</button>
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         <span jhiTranslate="hrVerseApp.attendance.home.refreshListLabel">Refresh list</span>
