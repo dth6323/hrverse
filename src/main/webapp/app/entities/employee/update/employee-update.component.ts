@@ -16,6 +16,7 @@ import { EmployeeService } from '../service/employee.service';
 import { IEmployee } from '../employee.model';
 import { EmployeeFormGroup, EmployeeFormService } from './employee-form.service';
 
+/* eslint-disable */
 @Component({
   standalone: true,
   selector: 'jhi-employee-update',
@@ -49,7 +50,9 @@ export class EmployeeUpdateComponent implements OnInit {
       this.employee = employee;
       if (employee) {
         this.updateForm(employee);
+        console.log(employee);
       }
+      this.loadRelationshipsOptions();
       if (this.employeeTmp) {
         this.editForm.patchValue({
           name: this.employeeTmp.name,
@@ -58,9 +61,10 @@ export class EmployeeUpdateComponent implements OnInit {
           address: this.employeeTmp.address,
           gender: this.employeeTmp.gender,
           dateOfBirth: this.employeeTmp.dateOfBirth,
+          department: this.employeeTmp.department,
         });
+        console.log(this.editForm.value);
       }
-      this.loadRelationshipsOptions();
     });
   }
 

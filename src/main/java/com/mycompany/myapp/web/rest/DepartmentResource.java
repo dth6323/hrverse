@@ -159,12 +159,6 @@ public class DepartmentResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /departments/:id} : get the "id" department.
-     *
-     * @param id the id of the department to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the department, or with status {@code 404 (Not Found)}.
-     */
     @GetMapping("/{id}")
     public ResponseEntity<Department> getDepartment(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Department : {}", id);
@@ -172,12 +166,6 @@ public class DepartmentResource {
         return ResponseUtil.wrapOrNotFound(department);
     }
 
-    /**
-     * {@code DELETE  /departments/:id} : delete the "id" department.
-     *
-     * @param id the id of the department to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Department : {}", id);

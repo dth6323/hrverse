@@ -1,4 +1,4 @@
-package com.mycompany.myapp.repository;
+package com.mycompany.myapp.elasticRepository;
 
 import com.mycompany.myapp.domain.PdfDocument;
 import java.util.List;

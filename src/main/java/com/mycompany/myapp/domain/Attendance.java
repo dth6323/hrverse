@@ -6,12 +6,16 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
  * A Attendance.
  */
 @Entity
 @Table(name = "attendance")
+@Document(indexName = "attendance")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Attendance implements Serializable {
 
@@ -21,22 +25,27 @@ public class Attendance implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
+    @Field(type = FieldType.Keyword)
     private Long id;
 
     @NotNull
     @Column(name = "date_ofwork", nullable = false)
+    @Field(type = FieldType.Date)
     private LocalDate dateOfwork;
 
     @NotNull
     @Column(name = "check_in_time", nullable = false)
+    @Field(type = FieldType.Date)
     private Instant checkInTime;
 
     @NotNull
     @Column(name = "check_out_time", nullable = false)
+    @Field(type = FieldType.Date)
     private Instant checkOutTime;
 
     @NotNull
     @Column(name = "work_hour", nullable = false)
+    @Field(type = FieldType.Float)
     private Float workHour;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,6 +53,7 @@ public class Attendance implements Serializable {
         value = { "user", "department", "contracts", "attendances", "payrolls", "resignations", "rewardPunishments" },
         allowSetters = true
     )
+    @Field(type = FieldType.Object, enabled = false)
     private Employee employee;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -32,8 +32,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (this.account()) {
       this.employeeService.getInformation().subscribe({
         next: data => {
-          //eslint-disable-next-line
-          console.log(data);
           this.employeeData = data;
         },
       });

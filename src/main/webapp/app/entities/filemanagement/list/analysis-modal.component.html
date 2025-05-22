@@ -1,11 +1,42 @@
-<div class="modal-header bg-info">
-  <h4 class="modal-title">AI Analysis for {{ fileName }}</h4>
+<div class="modal-header bg-info text-white">
+  <h4 class="modal-title" id="aiAnalysisModalLabel">AI Analysis for {{ fileName }}</h4>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
 </div>
 <div class="modal-body">
-  <pre>{{ analysisContent }}</pre>
+  <h5 class="mb-3">Employee Details</h5>
+  <dl class="row">
+    <dt class="col-sm-4">Name</dt>
+    <dd class="col-sm-8">{{ parsedData?.name || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Phone</dt>
+    <dd class="col-sm-8">{{ parsedData?.phone || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Email</dt>
+    <dd class="col-sm-8">{{ parsedData?.email || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Address</dt>
+    <dd class="col-sm-8">{{ parsedData?.address || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Gender</dt>
+    <dd class="col-sm-8">{{ parsedData?.gender || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Date of Birth</dt>
+    <dd class="col-sm-8">{{ parsedData?.dateOfBirth || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Recommended Department</dt>
+    <dd class="col-sm-8">{{ parsedData?.recommendedDepartment?.name || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Explanation</dt>
+    <dd class="col-sm-8">{{ parsedData?.recommendedDepartment?.explanation || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Skill</dt>
+    <dd class="col-sm-8">{{ parsedData?.skill || 'N/A' }}</dd>
+
+    <dt class="col-sm-4">Work Experience</dt>
+    <dd class="col-sm-8">{{ parsedData?.workExperience || 'N/A' }}</dd>
+  </dl>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-success" (click)="openCreate()">Save</button>
-  <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
+  <button type="button" class="btn btn-success" (click)="openCreate()"><i class="bi bi-save me-1"></i> Save</button>
+  <button type="button" class="btn btn-danger" (click)="activeModal.close()"><i class="bi bi-x-circle me-1"></i> Close</button>
 </div>

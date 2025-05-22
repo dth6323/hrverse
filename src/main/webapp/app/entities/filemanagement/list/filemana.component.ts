@@ -9,12 +9,16 @@ import * as pdfjsLib from 'pdfjs-dist';
 import { firstValueFrom } from 'rxjs';
 import type { PDFDocumentLoadingTask } from 'pdfjs-dist/types/src/display/api';
 import { AnalysisModalComponent } from './analysis-modal.component';
+import { DepartmentService } from '../../department/service/department.service';
+import { HttpResponse } from '@angular/common/http';
+import { IDepartment } from '../../department/department.model';
 @Component({
   standalone: true,
   selector: 'jhi-file',
   templateUrl: './filemana.component.html',
   imports: [FormsModule],
 })
+/* eslint-disable */
 export class FileComponent implements OnInit {
   subscription: Subscription | null = null;
   files?: IFileModel[];
@@ -24,6 +28,7 @@ export class FileComponent implements OnInit {
   pdfText = '';
   private fileService = inject(FilemanaService);
   private modalService = inject(NgbModal);
+  private deService = inject(DepartmentService);
   private genAI = new GoogleGenerativeAI('AIzaSyByIRLR_YmMrFbTmohJqlm_jMMvWa7oBGg');
   ngOnInit(): void {
     this.loadFiles();
@@ -47,14 +52,48 @@ export class FileComponent implements OnInit {
         return;
       }
 
+      const departmentsResponse = await firstValueFrom(
+        this.deService.query().pipe(
+          tap((res: HttpResponse<IDepartment[]>) => {
+            if (!res.body) {
+              throw new Error('Không lấy được danh sách phòng ban');
+            }
+          }),
+        ),
+      );
+      console.log(departmentsResponse);
+      //eslint-disable
+      const departments =
+        departmentsResponse.body?.map((dept: IDepartment) => ({ id: dept.id || 'unknown', name: dept.departmentName || 'Unknown' })) || [];
+      const departmentInfo = departments.map(dept => `ID: ${dept.id},Department: ${dept.name}`).join('\n');
+      const prompt = `
+      Please parse the following CV content and return the information in this JSON format
+      Additionally, based on the following list of departments and their descriptions, recommend the most suitable department for this candidate and provide a brief explanation for your recommendation:
+      ${departmentInfo}. If a field is missing, enter "Unknown":
+      {
+        "name": "",
+        "phone": "",
+        "email": "",
+        "address": "",
+        "gender": "male or female or Unknown",
+        "dateOfBirth": "",
+        "skill": "",
+        "workExperience": "",
+        "degree": "",
+        "recommendedDepartment": {
+          "id": "",
+          "name": "",
+          "explanation": ""
+        }
+      }
+      CV Content:
+      ${content}
+    `;
       const model = this.genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-      const result = await model.generateContent(`
-  Please parse the following content and return it to me in this json If not, enter 00..: {name: , phone: ,email:, address:, gender: male or female, dateOfbirth, skill, WORK EXPERIENCE, CERTIFICATE}\n${content}
-`);
+      const result = await model.generateContent(prompt);
       const response = result.response;
       const genText = response.text();
 
-      // Mở modal để hiển thị kết quả
       this.openAnalysisModal(genText, fileName);
     } catch (error) {
       console.error('Lỗi phân tích với GenAI:', error);
@@ -173,7 +212,7 @@ export class FileComponent implements OnInit {
       error: () => (this.isLoading = false),
     });
   }
-  private openAnalysisModal(analysisContent: string, fileName: string): void {
+  private openAnalysisModal(analysisContent: any, fileName: string): void {
     const modalRef = this.modalService.open(AnalysisModalComponent);
     modalRef.componentInstance.analysisContent = analysisContent;
     modalRef.componentInstance.fileName = fileName;

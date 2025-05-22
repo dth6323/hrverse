@@ -1,41 +1,51 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmployeeUpdateComponent } from '../../employee/update/employee-update.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Dayjs } from 'dayjs';
 import dayjs from 'dayjs/esm';
 import { Gender } from '../../enumerations/gender.model';
+import { IDepartment } from '../../department/department.model';
 @Component({
   standalone: true,
   selector: 'jhi-analysis-modal',
   templateUrl: './analysis-modal.component.html',
 })
-export class AnalysisModalComponent {
-  @Input() analysisContent = '';
+export class AnalysisModalComponent implements OnInit {
+  @Input() analysisContent: any;
   @Input() fileName = '';
+  cleanedContent: any;
+  parsedData: any;
   private modalService = inject(NgbModal);
-
   constructor(public activeModal: NgbActiveModal) {}
+  /* eslint-disable */
+  ngOnInit(): void {
+    this.cleanedContent = this.analysisContent
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .replace(/'''/g, '')
+      .trim();
+    this.parsedData = JSON.parse(this.cleanedContent);
+    console.log(this.parsedData);
+  }
   openCreate(): void {
     try {
-      const cleanedContent = this.analysisContent
-        .replace(/```json/g, '')
-        .replace(/```/g, '')
-        .replace(/'''/g, '')
-        .trim();
-      // Parse the JSON string from analysisContent
-      const parsedData = JSON.parse(cleanedContent);
       const employeeData = {
-        name: parsedData.name || '',
-        phone: parsedData.phone || '',
-        email: parsedData.email || '',
-        address: parsedData.address || '',
-        gender: parsedData.gender ? (parsedData.gender.toLowerCase() === 'male' ? Gender.MALE : Gender.FEMALE) : null,
-        dateOfBirth: parsedData.dateOfbirth
-          ? dayjs(parsedData.dateOfbirth, 'DD/MM/YYYY') // Parse thành đối tượng Day.js
+        name: this.parsedData.name || '',
+        phone: this.parsedData.phone || '',
+        email: this.parsedData.email || '',
+        address: this.parsedData.address || '',
+        gender: this.parsedData.gender ? (this.parsedData.gender.toLowerCase() === 'male' ? Gender.MALE : Gender.FEMALE) : null,
+        dateOfBirth: this.parsedData.dateOfbirth
+          ? dayjs(this.parsedData.dateOfbirth, 'DD/MM/YYYY') // Parse thành đối tượng Day.js
           : null,
+        department:
+          this.parsedData.recommendedDepartment && (this.parsedData.recommendedDepartment.id ?? this.parsedData.recommendedDepartment['id'])
+            ? ({
+                id: parseInt(this.parsedData.recommendedDepartment.id ?? this.parsedData.recommendedDepartment['id'], 10),
+              } as IDepartment)
+            : null,
       };
-
       const modalRef = this.modalService.open(EmployeeUpdateComponent);
       modalRef.componentInstance.employeeTmp = employeeData;
 

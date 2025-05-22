@@ -1,6 +1,7 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Attendance;
+import com.mycompany.myapp.elasticRepository.AttendanceSearchRepository;
 import com.mycompany.myapp.repository.AttendanceRepository;
 import com.mycompany.myapp.service.AttendanceImportService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
@@ -43,10 +44,16 @@ public class AttendanceResource {
 
     private final AttendanceImportService attendanceService;
     private final AttendanceRepository attendanceRepository;
+    private final AttendanceSearchRepository attendanceSearchRepository;
 
-    public AttendanceResource(AttendanceRepository attendanceRepository, AttendanceImportService attendanceService) {
+    public AttendanceResource(
+        AttendanceRepository attendanceRepository,
+        AttendanceImportService attendanceService,
+        AttendanceSearchRepository attendanceSearchRepository
+    ) {
         this.attendanceRepository = attendanceRepository;
         this.attendanceService = attendanceService;
+        this.attendanceSearchRepository = attendanceSearchRepository;
     }
 
     @PostMapping("/import")
@@ -68,6 +75,7 @@ public class AttendanceResource {
             throw new BadRequestAlertException("A new attendance cannot already have an ID", ENTITY_NAME, "idexists");
         }
         attendance = attendanceRepository.save(attendance);
+        attendanceSearchRepository.save(attendance);
         return ResponseEntity.created(new URI("/api/attendances/" + attendance.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, attendance.getId().toString()))
             .body(attendance);

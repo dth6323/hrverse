@@ -2,6 +2,7 @@ package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.domain.Attendance;
 import com.mycompany.myapp.domain.Employee;
+import com.mycompany.myapp.elasticRepository.AttendanceSearchRepository;
 import com.mycompany.myapp.repository.AttendanceRepository;
 import com.mycompany.myapp.repository.EmployeeRepository;
 import java.io.IOException;
@@ -29,10 +30,16 @@ public class AttendanceImportService {
 
     private final AttendanceRepository attendanceRepository;
     private final EmployeeRepository employeeRepository;
+    private final AttendanceSearchRepository attendanceSearchRepository;
 
-    public AttendanceImportService(AttendanceRepository attendanceRepository, EmployeeRepository employeeRepository) {
+    public AttendanceImportService(
+        AttendanceRepository attendanceRepository,
+        EmployeeRepository employeeRepository,
+        AttendanceSearchRepository attendanceSearchRepository
+    ) {
         this.attendanceRepository = attendanceRepository;
         this.employeeRepository = employeeRepository;
+        this.attendanceSearchRepository = attendanceSearchRepository;
     }
 
     public int importFromExcel(MultipartFile file) throws IOException {
@@ -155,6 +162,29 @@ public class AttendanceImportService {
 
             log.info("Total rows processed: {}, Valid attendances: {}", sheet.getLastRowNum(), attendances.size());
             attendanceRepository.saveAll(attendances);
+            for (Attendance attendance : attendances) {
+                try {
+                    // Create a detached copy with only necessary fields for Elasticsearch
+                    Attendance elasticAttendance = new Attendance()
+                        .id(attendance.getId())
+                        .dateOfwork(attendance.getDateOfwork())
+                        .checkInTime(attendance.getCheckInTime())
+                        .checkOutTime(attendance.getCheckOutTime())
+                        .workHour(attendance.getWorkHour());
+
+                    // Add employee ID reference without the full object
+                    if (attendance.getEmployee() != null) {
+                        Employee employeeRef = new Employee();
+                        employeeRef.setId(attendance.getEmployee().getId());
+                        elasticAttendance.setEmployee(employeeRef);
+                    }
+
+                    attendanceSearchRepository.save(elasticAttendance);
+                } catch (Exception e) {
+                    log.error("Error saving attendance to Elasticsearch: {}", e.getMessage());
+                    // Continue with the next record rather than failing the entire batch
+                }
+            }
             return attendances.size();
         }
     }
