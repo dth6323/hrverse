@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Employee;
 import com.mycompany.myapp.repository.EmployeeRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.service.EmployeeService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -59,6 +61,7 @@ public class EmployeeResource {
         return ResponseUtil.wrapOrNotFound(employeeDTO);
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PostMapping("")
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) throws URISyntaxException {
         LOG.debug("REST request to save Employee : {}", employee);
@@ -71,6 +74,7 @@ public class EmployeeResource {
             .body(employee);
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(
         @PathVariable(value = "id", required = false) final Long id,
@@ -94,6 +98,7 @@ public class EmployeeResource {
             .body(employee);
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Employee> partialUpdateEmployee(
         @PathVariable(value = "id", required = false) final Long id,
@@ -143,12 +148,7 @@ public class EmployeeResource {
         );
     }
 
-    /**
-     * {@code GET  /employees} : get all the employees.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of employees in body.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("")
     public ResponseEntity<List<Employee>> getAllEmployees(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Employees");
@@ -157,6 +157,7 @@ public class EmployeeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployee(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Employee : {}", id);
@@ -164,12 +165,7 @@ public class EmployeeResource {
         return ResponseUtil.wrapOrNotFound(employee);
     }
 
-    /**
-     * {@code DELETE  /employees/:id} : delete the "id" employee.
-     *
-     * @param id the id of the employee to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Employee : {}", id);

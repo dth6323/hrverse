@@ -110,6 +110,7 @@
                 <div class="btn-group">
                   @if (resignation.status) {
                     <button
+                      *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MANAGER']"
                       type="button"
                       (click)="setActive(resignation)"
                       class="btn btn-success btn-sm"
@@ -119,6 +120,7 @@
                       <span class="d-none d-md-inline">Active</span>
                     </button>
                     <button
+                      *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MANAGER']"
                       type="button"
                       (click)="setDestroy(resignation)"
                       class="btn btn-danger btn-sm"
@@ -133,12 +135,23 @@
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                   </a>
 
-                  <a [routerLink]="['/resignation', resignation.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                  <a
+                    [routerLink]="['/resignation', resignation.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                    *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MANAGER']"
+                  >
                     <fa-icon icon="pencil-alt"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                   </a>
 
-                  <button type="submit" (click)="delete(resignation)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <button
+                    *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MANAGER']"
+                    type="submit"
+                    (click)="delete(resignation)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                  >
                     <fa-icon icon="times"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                   </button>

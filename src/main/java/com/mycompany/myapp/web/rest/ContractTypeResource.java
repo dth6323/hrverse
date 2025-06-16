@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.ContractType;
 import com.mycompany.myapp.repository.ContractTypeRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,13 +47,7 @@ public class ContractTypeResource {
         this.contractTypeRepository = contractTypeRepository;
     }
 
-    /**
-     * {@code POST  /contract-types} : Create a new contractType.
-     *
-     * @param contractType the contractType to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new contractType, or with status {@code 400 (Bad Request)} if the contractType has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PostMapping("")
     public ResponseEntity<ContractType> createContractType(@Valid @RequestBody ContractType contractType) throws URISyntaxException {
         LOG.debug("REST request to save ContractType : {}", contractType);
@@ -64,16 +60,7 @@ public class ContractTypeResource {
             .body(contractType);
     }
 
-    /**
-     * {@code PUT  /contract-types/:id} : Updates an existing contractType.
-     *
-     * @param id the id of the contractType to save.
-     * @param contractType the contractType to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated contractType,
-     * or with status {@code 400 (Bad Request)} if the contractType is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the contractType couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PutMapping("/{id}")
     public ResponseEntity<ContractType> updateContractType(
         @PathVariable(value = "id", required = false) final Long id,
@@ -97,17 +84,7 @@ public class ContractTypeResource {
             .body(contractType);
     }
 
-    /**
-     * {@code PATCH  /contract-types/:id} : Partial updates given fields of an existing contractType, field will ignore if it is null
-     *
-     * @param id the id of the contractType to save.
-     * @param contractType the contractType to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated contractType,
-     * or with status {@code 400 (Bad Request)} if the contractType is not valid,
-     * or with status {@code 404 (Not Found)} if the contractType is not found,
-     * or with status {@code 500 (Internal Server Error)} if the contractType couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ContractType> partialUpdateContractType(
         @PathVariable(value = "id", required = false) final Long id,
@@ -145,12 +122,7 @@ public class ContractTypeResource {
         );
     }
 
-    /**
-     * {@code GET  /contract-types} : get all the contractTypes.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of contractTypes in body.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @GetMapping("")
     public ResponseEntity<List<ContractType>> getAllContractTypes(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of ContractTypes");
@@ -159,12 +131,7 @@ public class ContractTypeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /contract-types/:id} : get the "id" contractType.
-     *
-     * @param id the id of the contractType to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the contractType, or with status {@code 404 (Not Found)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @GetMapping("/{id}")
     public ResponseEntity<ContractType> getContractType(@PathVariable("id") Long id) {
         LOG.debug("REST request to get ContractType : {}", id);
@@ -172,12 +139,7 @@ public class ContractTypeResource {
         return ResponseUtil.wrapOrNotFound(contractType);
     }
 
-    /**
-     * {@code DELETE  /contract-types/:id} : delete the "id" contractType.
-     *
-     * @param id the id of the contractType to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContractType(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete ContractType : {}", id);

@@ -17,6 +17,7 @@ import { EntityArrayResponseType, ResignationService } from '../service/resignat
 import { ResignationDeleteDialogComponent } from '../delete/resignation-delete-dialog.component';
 import { AlertService } from '../../../core/util/alert.service';
 import { Status } from '../../enumerations/status.model';
+import HasAnyAuthorityDirective from '../../../shared/auth/has-any-authority.directive';
 @Component({
   standalone: true,
   selector: 'jhi-resignation',
@@ -31,6 +32,7 @@ import { Status } from '../../enumerations/status.model';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
+    HasAnyAuthorityDirective,
   ],
 })
 export class ResignationComponent implements OnInit {

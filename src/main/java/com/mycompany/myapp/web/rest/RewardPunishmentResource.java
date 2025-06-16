@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.RewardPunishment;
 import com.mycompany.myapp.repository.RewardPunishmentRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,13 +47,7 @@ public class RewardPunishmentResource {
         this.rewardPunishmentRepository = rewardPunishmentRepository;
     }
 
-    /**
-     * {@code POST  /reward-punishments} : Create a new rewardPunishment.
-     *
-     * @param rewardPunishment the rewardPunishment to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new rewardPunishment, or with status {@code 400 (Bad Request)} if the rewardPunishment has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PostMapping("")
     public ResponseEntity<RewardPunishment> createRewardPunishment(@Valid @RequestBody RewardPunishment rewardPunishment)
         throws URISyntaxException {
@@ -65,16 +61,7 @@ public class RewardPunishmentResource {
             .body(rewardPunishment);
     }
 
-    /**
-     * {@code PUT  /reward-punishments/:id} : Updates an existing rewardPunishment.
-     *
-     * @param id the id of the rewardPunishment to save.
-     * @param rewardPunishment the rewardPunishment to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated rewardPunishment,
-     * or with status {@code 400 (Bad Request)} if the rewardPunishment is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the rewardPunishment couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PutMapping("/{id}")
     public ResponseEntity<RewardPunishment> updateRewardPunishment(
         @PathVariable(value = "id", required = false) final Long id,
@@ -98,17 +85,7 @@ public class RewardPunishmentResource {
             .body(rewardPunishment);
     }
 
-    /**
-     * {@code PATCH  /reward-punishments/:id} : Partial updates given fields of an existing rewardPunishment, field will ignore if it is null
-     *
-     * @param id the id of the rewardPunishment to save.
-     * @param rewardPunishment the rewardPunishment to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated rewardPunishment,
-     * or with status {@code 400 (Bad Request)} if the rewardPunishment is not valid,
-     * or with status {@code 404 (Not Found)} if the rewardPunishment is not found,
-     * or with status {@code 500 (Internal Server Error)} if the rewardPunishment couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<RewardPunishment> partialUpdateRewardPunishment(
         @PathVariable(value = "id", required = false) final Long id,
@@ -155,12 +132,7 @@ public class RewardPunishmentResource {
         );
     }
 
-    /**
-     * {@code GET  /reward-punishments} : get all the rewardPunishments.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rewardPunishments in body.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("")
     public ResponseEntity<List<RewardPunishment>> getAllRewardPunishments(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
@@ -171,12 +143,7 @@ public class RewardPunishmentResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /reward-punishments/:id} : get the "id" rewardPunishment.
-     *
-     * @param id the id of the rewardPunishment to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the rewardPunishment, or with status {@code 404 (Not Found)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("/{id}")
     public ResponseEntity<RewardPunishment> getRewardPunishment(@PathVariable("id") Long id) {
         LOG.debug("REST request to get RewardPunishment : {}", id);
@@ -184,12 +151,7 @@ public class RewardPunishmentResource {
         return ResponseUtil.wrapOrNotFound(rewardPunishment);
     }
 
-    /**
-     * {@code DELETE  /reward-punishments/:id} : delete the "id" rewardPunishment.
-     *
-     * @param id the id of the rewardPunishment to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRewardPunishment(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete RewardPunishment : {}", id);

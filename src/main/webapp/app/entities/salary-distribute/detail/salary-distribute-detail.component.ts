@@ -30,6 +30,7 @@ export class SalaryDistributeDetailComponent implements OnInit {
   salaryDistribute = input<ISalaryDistribute | null>(null);
   id: string | null = null;
   protected payroll: NewPayroll | null = null;
+  protected isEmployeeLoaded = false;
   protected route: ActivatedRoute = inject(ActivatedRoute);
   protected employeeDetail?: SalaryDistribute[] = [];
   protected salaryDistributeService = inject(SalaryDistributeService);
@@ -93,6 +94,9 @@ export class SalaryDistributeDetailComponent implements OnInit {
       return this.salaryDistributeService.showemployee(this.id).subscribe({
         next: data => {
           this.employeeDetail = data;
+          //eslint-disable-next-line
+          console.log(data);
+          if (data.length > 2) this.isEmployeeLoaded = true;
         },
       });
   }

@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.ContractTermination;
 import com.mycompany.myapp.repository.ContractTerminationRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,13 +47,7 @@ public class ContractTerminationResource {
         this.contractTerminationRepository = contractTerminationRepository;
     }
 
-    /**
-     * {@code POST  /contract-terminations} : Create a new contractTermination.
-     *
-     * @param contractTermination the contractTermination to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new contractTermination, or with status {@code 400 (Bad Request)} if the contractTermination has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PostMapping("")
     public ResponseEntity<ContractTermination> createContractTermination(@Valid @RequestBody ContractTermination contractTermination)
         throws URISyntaxException {
@@ -65,16 +61,7 @@ public class ContractTerminationResource {
             .body(contractTermination);
     }
 
-    /**
-     * {@code PUT  /contract-terminations/:id} : Updates an existing contractTermination.
-     *
-     * @param id the id of the contractTermination to save.
-     * @param contractTermination the contractTermination to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated contractTermination,
-     * or with status {@code 400 (Bad Request)} if the contractTermination is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the contractTermination couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PutMapping("/{id}")
     public ResponseEntity<ContractTermination> updateContractTermination(
         @PathVariable(value = "id", required = false) final Long id,
@@ -98,17 +85,7 @@ public class ContractTerminationResource {
             .body(contractTermination);
     }
 
-    /**
-     * {@code PATCH  /contract-terminations/:id} : Partial updates given fields of an existing contractTermination, field will ignore if it is null
-     *
-     * @param id the id of the contractTermination to save.
-     * @param contractTermination the contractTermination to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated contractTermination,
-     * or with status {@code 400 (Bad Request)} if the contractTermination is not valid,
-     * or with status {@code 404 (Not Found)} if the contractTermination is not found,
-     * or with status {@code 500 (Internal Server Error)} if the contractTermination couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ContractTermination> partialUpdateContractTermination(
         @PathVariable(value = "id", required = false) final Long id,
@@ -149,12 +126,7 @@ public class ContractTerminationResource {
         );
     }
 
-    /**
-     * {@code GET  /contract-terminations} : get all the contractTerminations.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of contractTerminations in body.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("")
     public ResponseEntity<List<ContractTermination>> getAllContractTerminations(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
@@ -165,12 +137,7 @@ public class ContractTerminationResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /contract-terminations/:id} : get the "id" contractTermination.
-     *
-     * @param id the id of the contractTermination to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the contractTermination, or with status {@code 404 (Not Found)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("/{id}")
     public ResponseEntity<ContractTermination> getContractTermination(@PathVariable("id") Long id) {
         LOG.debug("REST request to get ContractTermination : {}", id);
@@ -178,12 +145,7 @@ public class ContractTerminationResource {
         return ResponseUtil.wrapOrNotFound(contractTermination);
     }
 
-    /**
-     * {@code DELETE  /contract-terminations/:id} : delete the "id" contractTermination.
-     *
-     * @param id the id of the contractTermination to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContractTermination(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete ContractTermination : {}", id);

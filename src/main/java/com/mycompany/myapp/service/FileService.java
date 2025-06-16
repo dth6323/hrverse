@@ -81,7 +81,6 @@ public class FileService {
         return fileName;
     }
 
-    // Đọc file từ MinIO
     public String readFileContentFromMinIO(String fileName) throws Exception {
         InputStream inputStream = minioClient.getObject(
             GetObjectArgs.builder().bucket(minioConfig.getBucketName()).object(fileName).build()

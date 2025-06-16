@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Department;
 import com.mycompany.myapp.repository.DepartmentRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,13 +47,7 @@ public class DepartmentResource {
         this.departmentRepository = departmentRepository;
     }
 
-    /**
-     * {@code POST  /departments} : Create a new department.
-     *
-     * @param department the department to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new department, or with status {@code 400 (Bad Request)} if the department has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PostMapping("")
     public ResponseEntity<Department> createDepartment(@Valid @RequestBody Department department) throws URISyntaxException {
         LOG.debug("REST request to save Department : {}", department);
@@ -64,16 +60,7 @@ public class DepartmentResource {
             .body(department);
     }
 
-    /**
-     * {@code PUT  /departments/:id} : Updates an existing department.
-     *
-     * @param id the id of the department to save.
-     * @param department the department to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated department,
-     * or with status {@code 400 (Bad Request)} if the department is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the department couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PutMapping("/{id}")
     public ResponseEntity<Department> updateDepartment(
         @PathVariable(value = "id", required = false) final Long id,
@@ -97,17 +84,7 @@ public class DepartmentResource {
             .body(department);
     }
 
-    /**
-     * {@code PATCH  /departments/:id} : Partial updates given fields of an existing department, field will ignore if it is null
-     *
-     * @param id the id of the department to save.
-     * @param department the department to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated department,
-     * or with status {@code 400 (Bad Request)} if the department is not valid,
-     * or with status {@code 404 (Not Found)} if the department is not found,
-     * or with status {@code 500 (Internal Server Error)} if the department couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Department> partialUpdateDepartment(
         @PathVariable(value = "id", required = false) final Long id,
@@ -145,12 +122,7 @@ public class DepartmentResource {
         );
     }
 
-    /**
-     * {@code GET  /departments} : get all the departments.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of departments in body.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @GetMapping("")
     public ResponseEntity<List<Department>> getAllDepartments(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Departments");
@@ -159,6 +131,7 @@ public class DepartmentResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @GetMapping("/{id}")
     public ResponseEntity<Department> getDepartment(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Department : {}", id);
@@ -166,6 +139,7 @@ public class DepartmentResource {
         return ResponseUtil.wrapOrNotFound(department);
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Department : {}", id);

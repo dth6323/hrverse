@@ -12,6 +12,7 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
+        <jhi-alert></jhi-alert>
         @if (editForm.controls.id.value !== null) {
           <div class="mb-3">
             <label class="form-label" for="field_id" jhiTranslate="hrVerseApp.resignation.id">ID</label>
@@ -32,10 +33,9 @@
               ngbDatepicker
               #submissionDateDp="ngbDatepicker"
               formControlName="submissionDate"
+              [readOnly]="true"
+              [disabled]="isDisabled"
             />
-            <button type="button" class="btn btn-secondary" (click)="submissionDateDp.toggle()">
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
           </div>
           @if (submissionDateRef.invalid && (submissionDateRef.dirty || submissionDateRef.touched)) {
             <div>

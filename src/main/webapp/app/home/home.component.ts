@@ -9,13 +9,14 @@ import { Account } from 'app/core/auth/account.model';
 import { EmployeeService } from '../entities/employee/service/employee.service';
 import { IEmployee } from '../entities/employee/employee.model';
 import { Infor } from '../entities/employee/infor.model';
+import HasAnyAuthorityDirective from '../shared/auth/has-any-authority.directive';
 
 @Component({
   standalone: true,
   selector: 'jhi-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  imports: [SharedModule, RouterModule],
+  imports: [SharedModule, RouterModule, HasAnyAuthorityDirective],
 })
 export default class HomeComponent implements OnInit, OnDestroy {
   account = signal<Account | null>(null);
@@ -32,6 +33,8 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (this.account()) {
       this.employeeService.getInformation().subscribe({
         next: data => {
+          //eslint-disable-next-line
+          console.log(this.account()?.authorities);
           this.employeeData = data;
         },
       });

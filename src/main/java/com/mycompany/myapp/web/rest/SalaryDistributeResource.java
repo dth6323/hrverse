@@ -3,6 +3,7 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.domain.Payroll;
 import com.mycompany.myapp.domain.SalaryDistribute;
 import com.mycompany.myapp.repository.SalaryDistributeRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.service.FileService;
 import com.mycompany.myapp.service.SalaryDistributeService;
 import com.mycompany.myapp.service.dto.request.CaculateSalaryRequest;
@@ -32,6 +33,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -68,6 +70,7 @@ public class SalaryDistributeResource {
         this.fileService = fileService;
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PostMapping("")
     public ResponseEntity<SalaryDistribute> createSalaryDistribute(@Valid @RequestBody SalaryDistribute salaryDistribute)
         throws URISyntaxException {
@@ -81,6 +84,7 @@ public class SalaryDistributeResource {
             .body(salaryDistribute);
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PutMapping("/{id}")
     public ResponseEntity<SalaryDistribute> updateSalaryDistribute(
         @PathVariable(value = "id", required = false) final Long id,
@@ -109,6 +113,7 @@ public class SalaryDistributeResource {
         return "Test endpoint working";
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SalaryDistribute> partialUpdateSalaryDistribute(
         @PathVariable(value = "id", required = false) final Long id,
@@ -152,12 +157,7 @@ public class SalaryDistributeResource {
         );
     }
 
-    /**
-     * {@code GET  /salary-distributes} : get all the salaryDistributes.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of salaryDistributes in body.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("")
     public ResponseEntity<List<SalaryDistribute>> getAllSalaryDistributes(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
@@ -168,12 +168,7 @@ public class SalaryDistributeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /salary-distributes/:id} : get the "id" salaryDistribute.
-     *
-     * @param id the id of the salaryDistribute to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the salaryDistribute, or with status {@code 404 (Not Found)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("/{id}")
     public ResponseEntity<SalaryDistribute> getSalaryDistribute(@PathVariable("id") Long id) {
         LOG.debug("REST request to get SalaryDistribute : {}", id);
@@ -181,12 +176,7 @@ public class SalaryDistributeResource {
         return ResponseUtil.wrapOrNotFound(salaryDistribute);
     }
 
-    /**
-     * {@code DELETE  /salary-distributes/:id} : delete the "id" salaryDistribute.
-     *
-     * @param id the id of the salaryDistribute to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSalaryDistribute(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete SalaryDistribute : {}", id);
@@ -196,11 +186,13 @@ public class SalaryDistributeResource {
             .build();
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PostMapping("/caculate")
     public ResponseEntity<List<Payroll>> caculateSalaryDistribute(@RequestBody CaculateSalaryRequest request) {
         return ResponseEntity.ok(salaryDistributeService.salaryCaculate(request));
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("/export")
     public ResponseEntity<Resource> exportDetails(@RequestParam("id") String id) throws Exception {
         if (id == null || id.trim().isEmpty()) {
@@ -231,6 +223,7 @@ public class SalaryDistributeResource {
             .body(resource);
     }
 
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("/details")
     public ResponseEntity<List<SalaryDistributeDetailResponse>> findDetail(@RequestParam("id") String id) {
         if (id == null || id.trim().isEmpty()) {

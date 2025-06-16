@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Payroll;
 import com.mycompany.myapp.repository.PayrollRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,13 +47,7 @@ public class PayrollResource {
         this.payrollRepository = payrollRepository;
     }
 
-    /**
-     * {@code POST  /payrolls} : Create a new payroll.
-     *
-     * @param payroll the payroll to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new payroll, or with status {@code 400 (Bad Request)} if the payroll has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PostMapping("")
     public ResponseEntity<Payroll> createPayroll(@Valid @RequestBody Payroll payroll) throws URISyntaxException {
         LOG.debug("REST request to save Payroll : {}", payroll);
@@ -64,16 +60,7 @@ public class PayrollResource {
             .body(payroll);
     }
 
-    /**
-     * {@code PUT  /payrolls/:id} : Updates an existing payroll.
-     *
-     * @param id the id of the payroll to save.
-     * @param payroll the payroll to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated payroll,
-     * or with status {@code 400 (Bad Request)} if the payroll is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the payroll couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PutMapping("/{id}")
     public ResponseEntity<Payroll> updatePayroll(
         @PathVariable(value = "id", required = false) final Long id,
@@ -97,17 +84,7 @@ public class PayrollResource {
             .body(payroll);
     }
 
-    /**
-     * {@code PATCH  /payrolls/:id} : Partial updates given fields of an existing payroll, field will ignore if it is null
-     *
-     * @param id the id of the payroll to save.
-     * @param payroll the payroll to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated payroll,
-     * or with status {@code 400 (Bad Request)} if the payroll is not valid,
-     * or with status {@code 404 (Not Found)} if the payroll is not found,
-     * or with status {@code 500 (Internal Server Error)} if the payroll couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Payroll> partialUpdatePayroll(
         @PathVariable(value = "id", required = false) final Long id,
@@ -145,12 +122,7 @@ public class PayrollResource {
         );
     }
 
-    /**
-     * {@code GET  /payrolls} : get all the payrolls.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of payrolls in body.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("")
     public ResponseEntity<List<Payroll>> getAllPayrolls(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Payrolls");
@@ -159,12 +131,7 @@ public class PayrollResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /payrolls/:id} : get the "id" payroll.
-     *
-     * @param id the id of the payroll to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the payroll, or with status {@code 404 (Not Found)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @GetMapping("/{id}")
     public ResponseEntity<Payroll> getPayroll(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Payroll : {}", id);
@@ -172,12 +139,7 @@ public class PayrollResource {
         return ResponseUtil.wrapOrNotFound(payroll);
     }
 
-    /**
-     * {@code DELETE  /payrolls/:id} : delete the "id" payroll.
-     *
-     * @param id the id of the payroll to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.MANAGER + "\")")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePayroll(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Payroll : {}", id);

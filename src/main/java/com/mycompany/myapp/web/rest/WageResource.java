@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Wage;
 import com.mycompany.myapp.repository.WageRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,13 +47,7 @@ public class WageResource {
         this.wageRepository = wageRepository;
     }
 
-    /**
-     * {@code POST  /wages} : Create a new wage.
-     *
-     * @param wage the wage to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new wage, or with status {@code 400 (Bad Request)} if the wage has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PostMapping("")
     public ResponseEntity<Wage> createWage(@Valid @RequestBody Wage wage) throws URISyntaxException {
         LOG.debug("REST request to save Wage : {}", wage);
@@ -64,16 +60,7 @@ public class WageResource {
             .body(wage);
     }
 
-    /**
-     * {@code PUT  /wages/:id} : Updates an existing wage.
-     *
-     * @param id the id of the wage to save.
-     * @param wage the wage to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated wage,
-     * or with status {@code 400 (Bad Request)} if the wage is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the wage couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PutMapping("/{id}")
     public ResponseEntity<Wage> updateWage(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Wage wage)
         throws URISyntaxException {
@@ -95,17 +82,7 @@ public class WageResource {
             .body(wage);
     }
 
-    /**
-     * {@code PATCH  /wages/:id} : Partial updates given fields of an existing wage, field will ignore if it is null
-     *
-     * @param id the id of the wage to save.
-     * @param wage the wage to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated wage,
-     * or with status {@code 400 (Bad Request)} if the wage is not valid,
-     * or with status {@code 404 (Not Found)} if the wage is not found,
-     * or with status {@code 500 (Internal Server Error)} if the wage couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Wage> partialUpdateWage(
         @PathVariable(value = "id", required = false) final Long id,
@@ -146,12 +123,7 @@ public class WageResource {
         );
     }
 
-    /**
-     * {@code GET  /wages} : get all the wages.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of wages in body.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @GetMapping("")
     public ResponseEntity<List<Wage>> getAllWages(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Wages");
@@ -160,12 +132,7 @@ public class WageResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /wages/:id} : get the "id" wage.
-     *
-     * @param id the id of the wage to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the wage, or with status {@code 404 (Not Found)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @GetMapping("/{id}")
     public ResponseEntity<Wage> getWage(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Wage : {}", id);
@@ -173,12 +140,7 @@ public class WageResource {
         return ResponseUtil.wrapOrNotFound(wage);
     }
 
-    /**
-     * {@code DELETE  /wages/:id} : delete the "id" wage.
-     *
-     * @param id the id of the wage to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+    @PreAuthorize("hasAnyAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWage(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Wage : {}", id);

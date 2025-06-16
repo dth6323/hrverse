@@ -46,7 +46,7 @@
     </div>
   </div>
   <div class="mt-4">
-    <button class="btn btn-success" (click)="caculate()">Caculate</button>
+    <button class="btn btn-success" (click)="caculate()" [disabled]="isEmployeeLoaded">Caculate</button>
     <button class="btn btn-primary" (click)="exportReport()" [disabled]="!id">Export</button>
     <div>
       <div class="pt-5">

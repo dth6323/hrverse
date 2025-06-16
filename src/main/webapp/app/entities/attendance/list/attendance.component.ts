@@ -15,6 +15,7 @@ import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigati
 import { IAttendance } from '../attendance.model';
 import { AttendanceService, EntityArrayResponseType } from '../service/attendance.service';
 import { AttendanceDeleteDialogComponent } from '../delete/attendance-delete-dialog.component';
+import HasAnyAuthorityDirective from '../../../shared/auth/has-any-authority.directive';
 
 @Component({
   standalone: true,
@@ -30,6 +31,7 @@ import { AttendanceDeleteDialogComponent } from '../delete/attendance-delete-dia
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
+    HasAnyAuthorityDirective,
   ],
 })
 export class AttendanceComponent implements OnInit {

@@ -1,8 +1,8 @@
 <div>
-  <input class="form-control" type="file" (change)="onFileSelected($event)" />
+  <input *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MANAGER']" class="form-control" type="file" (change)="onFileSelected($event)" />
   <h2 id="page-heading" data-cy="AttendanceHeading">
     <span jhiTranslate="hrVerseApp.attendance.home.title">Attendances</span>
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end" *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MANAGER']">
       <button class="btn btn-success me-2" (click)="uploadFile()" [disabled]="isLoading">Upload</button>
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
@@ -104,12 +104,23 @@
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                   </a>
 
-                  <a [routerLink]="['/attendance', attendance.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                  <a
+                    [routerLink]="['/attendance', attendance.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                    *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MANAGER']"
+                  >
                     <fa-icon icon="pencil-alt"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                   </a>
 
-                  <button type="submit" (click)="delete(attendance)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <button
+                    *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_MANAGER']"
+                    type="submit"
+                    (click)="delete(attendance)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                  >
                     <fa-icon icon="times"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                   </button>

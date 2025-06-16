@@ -22,7 +22,7 @@ public interface SalaryDistributeRepository extends JpaRepository<SalaryDistribu
             (
                 SELECT COUNT(a.id)
                 FROM attendance a
-                WHERE a.employee_id = e.id\s
+                WHERE a.employee_id = e.id
                 AND a.date_ofwork BETWEEN sd.start_date AND sd.end_date
             ) AS total_work_days,
             (
@@ -30,8 +30,16 @@ public interface SalaryDistributeRepository extends JpaRepository<SalaryDistribu
                 (
                     SELECT COUNT(a.id)
                     FROM attendance a
-                    WHERE a.employee_id = e.id\s
+                    WHERE a.employee_id = e.id
                     AND a.date_ofwork BETWEEN sd.start_date AND sd.end_date
+                )
+                + COALESCE(
+                    (
+                        SELECT SUM(rp.amount)
+                        FROM reward_punishment rp
+                        WHERE rp.employee_id = e.id
+                        AND rp.apply_date BETWEEN sd.start_date AND sd.end_date
+                    ), 0
                 )
             ) AS total_salary
         FROM

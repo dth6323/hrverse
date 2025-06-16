@@ -14,6 +14,7 @@ import { ResignationService } from '../service/resignation.service';
 import { IResignation } from '../resignation.model';
 import { ResignationFormGroup, ResignationFormService } from './resignation-form.service';
 import HasAnyAuthorityDirective from '../../../shared/auth/has-any-authority.directive';
+import dayjs from 'dayjs/esm';
 @Component({
   standalone: true,
   selector: 'jhi-resignation-update',
@@ -24,7 +25,7 @@ export class ResignationUpdateComponent implements OnInit {
   isSaving = false;
   resignation: IResignation | null = null;
   statusValues = [Status.PENDING];
-
+  isDisabled = true;
   employeesSharedCollection: IEmployee[] = [];
 
   protected resignationService = inject(ResignationService);
@@ -54,7 +55,8 @@ export class ResignationUpdateComponent implements OnInit {
         if (this.employeesSharedCollection.length > 0) {
           this.editForm.patchValue({
             employee: this.employeesSharedCollection[0],
-            status: Status.ACTIVE,
+            status: Status.PENDING,
+            submissionDate: dayjs(),
           });
         }
       },

@@ -1,12 +1,15 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Resignation;
+import com.mycompany.myapp.domain.enumeration.Status;
 import com.mycompany.myapp.repository.ResignationRepository;
+import com.mycompany.myapp.service.ResignationService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,47 +36,44 @@ import tech.jhipster.web.util.ResponseUtil;
 public class ResignationResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(ResignationResource.class);
-
+    LocalDate now = LocalDate.now();
     private static final String ENTITY_NAME = "resignation";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
     private final ResignationRepository resignationRepository;
+    private final ResignationService resignationService;
 
-    public ResignationResource(ResignationRepository resignationRepository) {
+    public ResignationResource(ResignationRepository resignationRepository, ResignationService resignationService) {
         this.resignationRepository = resignationRepository;
+        this.resignationService = resignationService;
     }
 
-    /**
-     * {@code POST  /resignations} : Create a new resignation.
-     *
-     * @param resignation the resignation to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new resignation, or with status {@code 400 (Bad Request)} if the resignation has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PostMapping("")
     public ResponseEntity<Resignation> createResignation(@Valid @RequestBody Resignation resignation) throws URISyntaxException {
         LOG.debug("REST request to save Resignation : {}", resignation);
+        if (!resignationService.checkRg(now)) return ResponseEntity.badRequest()
+            .headers(
+                HeaderUtil.createFailureAlert(
+                    applicationName,
+                    true,
+                    ENTITY_NAME,
+                    " You can only create up to 3 copies this month.",
+                    "false"
+                )
+            )
+            .body(resignation);
         if (resignation.getId() != null) {
             throw new BadRequestAlertException("A new resignation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        resignation.setStatus(Status.PENDING);
         resignation = resignationRepository.save(resignation);
         return ResponseEntity.created(new URI("/api/resignations/" + resignation.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, resignation.getId().toString()))
             .body(resignation);
     }
 
-    /**
-     * {@code PUT  /resignations/:id} : Updates an existing resignation.
-     *
-     * @param id the id of the resignation to save.
-     * @param resignation the resignation to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated resignation,
-     * or with status {@code 400 (Bad Request)} if the resignation is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the resignation couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PutMapping("/{id}")
     public ResponseEntity<Resignation> updateResignation(
         @PathVariable(value = "id", required = false) final Long id,
@@ -97,17 +97,6 @@ public class ResignationResource {
             .body(resignation);
     }
 
-    /**
-     * {@code PATCH  /resignations/:id} : Partial updates given fields of an existing resignation, field will ignore if it is null
-     *
-     * @param id the id of the resignation to save.
-     * @param resignation the resignation to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated resignation,
-     * or with status {@code 400 (Bad Request)} if the resignation is not valid,
-     * or with status {@code 404 (Not Found)} if the resignation is not found,
-     * or with status {@code 500 (Internal Server Error)} if the resignation couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Resignation> partialUpdateResignation(
         @PathVariable(value = "id", required = false) final Long id,
@@ -154,26 +143,14 @@ public class ResignationResource {
         );
     }
 
-    /**
-     * {@code GET  /resignations} : get all the resignations.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of resignations in body.
-     */
     @GetMapping("")
     public ResponseEntity<List<Resignation>> getAllResignations(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Resignations");
-        Page<Resignation> page = resignationRepository.findAll(pageable);
+        Page<Resignation> page = resignationService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
-     * {@code GET  /resignations/:id} : get the "id" resignation.
-     *
-     * @param id the id of the resignation to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the resignation, or with status {@code 404 (Not Found)}.
-     */
     @GetMapping("/{id}")
     public ResponseEntity<Resignation> getResignation(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Resignation : {}", id);
@@ -181,12 +158,6 @@ public class ResignationResource {
         return ResponseUtil.wrapOrNotFound(resignation);
     }
 
-    /**
-     * {@code DELETE  /resignations/:id} : delete the "id" resignation.
-     *
-     * @param id the id of the resignation to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteResignation(@PathVariable("id") Long id) {
         LOG.debug("REST request to delete Resignation : {}", id);

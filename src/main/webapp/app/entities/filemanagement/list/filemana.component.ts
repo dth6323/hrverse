@@ -12,11 +12,16 @@ import { AnalysisModalComponent } from './analysis-modal.component';
 import { DepartmentService } from '../../department/service/department.service';
 import { HttpResponse } from '@angular/common/http';
 import { IDepartment } from '../../department/department.model';
+import { AlertService } from '../../../core/util/alert.service';
+import { error } from '@angular/compiler-cli/src/transformers/util';
+import { AlertComponent } from '../../../shared/alert/alert.component';
+import { AlertErrorComponent } from '../../../shared/alert/alert-error.component';
+
 @Component({
   standalone: true,
   selector: 'jhi-file',
   templateUrl: './filemana.component.html',
-  imports: [FormsModule],
+  imports: [FormsModule, AlertComponent, AlertErrorComponent],
 })
 /* eslint-disable */
 export class FileComponent implements OnInit {
@@ -29,6 +34,7 @@ export class FileComponent implements OnInit {
   private fileService = inject(FilemanaService);
   private modalService = inject(NgbModal);
   private deService = inject(DepartmentService);
+  private al = inject(AlertService);
   private genAI = new GoogleGenerativeAI('AIzaSyByIRLR_YmMrFbTmohJqlm_jMMvWa7oBGg');
   ngOnInit(): void {
     this.loadFiles();
@@ -179,15 +185,30 @@ export class FileComponent implements OnInit {
 
   uploadFile(): void {
     if (!this.selectedFile) {
-      alert('Please select a file to upload.');
+      this.al.addAlert({
+        type: 'success',
+        message: 'Please select a file to upload',
+      });
       return;
     }
-
+    if (this.selectedFile.type !== 'application/pdf') {
+      this.al.addAlert({
+        type: 'danger',
+        message: 'file must pdf',
+      });
+      this.selectedFile = null;
+      const inputElement = document.querySelector('input[type="file"]') as HTMLInputElement;
+      inputElement.value = '';
+      return;
+    }
     this.isLoading = true;
 
     this.fileService.uploadFile(this.selectedFile).subscribe({
       next: () => {
-        alert('File uploaded successfully!');
+        this.al.addAlert({
+          type: 'success',
+          message: 'file upload sucess',
+        });
         this.loadFiles();
       },
       complete: () => {
@@ -195,6 +216,9 @@ export class FileComponent implements OnInit {
         this.selectedFile = null;
         const inputElement = document.querySelector('input[type="file"]') as HTMLInputElement;
         inputElement.value = ''; // Clear the file input value
+      },
+      error: () => {
+        this.isLoading = false;
       },
     });
   }
